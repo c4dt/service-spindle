@@ -1,0 +1,38 @@
+{
+  "name": "wasm",
+  "version": "0.0.0",
+  "description": "spindle client",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "webpack",
+    "lint": "eslint --ext .ts src types"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/c4dt/service-spindle.git"
+  },
+  "author": "",
+  "license": "AGPL-3.0",
+  "bugs": {
+    "url": "https://github.com/c4dt/service-spindle/issues"
+  },
+  "homepage": "https://github.com/c4dt/service-spindle#readme",
+  "dependencies": {
+    "tslib": "^1.11.1"
+  },
+  "devDependencies": {
+    "@types/node": "^12.12.31",
+    "@typescript-eslint/eslint-plugin": "^2.25.0",
+    "@typescript-eslint/parser": "^2.25.0",
+    "eslint": "^6.8.0",
+    "eslint-config-standard-with-typescript": "^15.0.1",
+    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-node": "^11.0.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
+    "ts-loader": "^6.2.2",
+    "typescript": "^3.8.3",
+    "webpack": "^4.42.1",
+    "webpack-cli": "^3.3.11"
+  }
+}
