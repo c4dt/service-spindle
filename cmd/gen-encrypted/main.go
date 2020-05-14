@@ -6,7 +6,7 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/ldsec/lattigo/bfv"
+	"github.com/ldsec/lattigo/ckks"
 
 	"github.com/c4dt/service-spindle"
 )
@@ -19,9 +19,9 @@ func main() {
 }
 
 func run(args []string) error {
-	secretMessage := make([]uint64, len(args))
+	secretMessage := make([]float64, len(args))
 	for i, a := range args {
-		u, err := strconv.ParseUint(a, 10, 64)
+		u, err := strconv.ParseFloat(a, 64)
 		if err != nil {
 			return fmt.Errorf("when converting argument %v to uint: %v", i, err)
 		}
@@ -30,10 +30,10 @@ func run(args []string) error {
 
 	secretMessageLength := uint(len(secretMessage))
 
-	const paramIndex = bfv.PN12QP109
-	params := bfv.DefaultParams[paramIndex]
+	const paramIndex = ckks.PN12QP109
+	params := ckks.DefaultParams[paramIndex]
 
-	kgen := bfv.NewKeyGenerator(params)
+	kgen := ckks.NewKeyGenerator(params)
 	secretKey, publicKey := kgen.GenKeyPair()
 
 	encoded := lib.Encode(params, publicKey, secretMessage)

@@ -6,7 +6,7 @@ import (
 	"syscall/js"
 
 	"github.com/c4dt/service-spindle"
-	"github.com/ldsec/lattigo/bfv"
+	"github.com/ldsec/lattigo/ckks"
 )
 
 func getBytes(v js.Value) []byte {
@@ -42,19 +42,19 @@ func decode(this js.Value, args []js.Value) interface{} {
 	marshalledCiphertext := getBytes(args[2])
 	messageLength := args[3].Int()
 
-	if paramIndex < 0 || paramIndex >= len(bfv.DefaultParams) {
+	if paramIndex < 0 || paramIndex >= len(ckks.DefaultParams) {
 		return errorJS{errors.New("param index is out of range")}
 	}
 	if messageLength < 0 {
 		return errorJS{errors.New("message length can not be negative")}
 	}
 
-	params := bfv.DefaultParams[paramIndex]
-	secretKey := new(bfv.SecretKey)
+	params := ckks.DefaultParams[paramIndex]
+	secretKey := new(ckks.SecretKey)
 	if err := secretKey.UnmarshalBinary(marshalledSecretKey); err != nil {
 		return errorJS{fmt.Errorf("when unmarshaling secret key: %v", err)}
 	}
-	ciphertext := new(bfv.Ciphertext)
+	ciphertext := new(ckks.Ciphertext)
 	if err := ciphertext.UnmarshalBinary(marshalledCiphertext); err != nil {
 		return errorJS{fmt.Errorf("when unmarshaling ciphertext: %v", err)}
 	}

@@ -22,7 +22,7 @@ wasm/node_modules/.bin/webpack:
 
 wasm/dist:
 	mkdir $@
-wasm/dist/main.wasm: wasm/src/main.go | wasm/dist
+wasm/dist/main.wasm: wasm/src/main.go lib.go | wasm/dist
 	GOARCH=wasm GOOS=js go build -o $@ ./$(<D)
 wasm/dist/bundle.js: wasm/tsconfig.json $(wildcard wasm/src/*.ts) | wasm/dist wasm/node_modules/.bin/webpack
 	cd wasm && npx webpack

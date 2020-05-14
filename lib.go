@@ -1,28 +1,39 @@
 package lib
 
 import (
-	"github.com/ldsec/lattigo/bfv"
+	"github.com/ldsec/lattigo/ckks"
 )
 
-func Encode(params *bfv.Parameters, publicKey *bfv.PublicKey, message []uint64) *bfv.Ciphertext {
-	encoder := bfv.NewEncoder(params)
+func complexToFloat(arr []complex128) []float64 {
+	ret := make([]float64, len(arr))
+	for i, v := range arr {
+		ret[i] = real(v)
+	}
+	return ret
+}
 
-	plaintext := bfv.NewPlaintext(params)
-	encoder.EncodeUint(message, plaintext)
+func floatToComplex(arr []float64) []complex128 {
+	ret := make([]complex128, len(arr))
+	for i, v := range arr {
+		ret[i] = complex(v, 0)
+	}
+	return ret
+}
 
-	encryptor := bfv.NewEncryptorFromPk(params, publicKey)
+func Encode(params *ckks.Parameters, publicKey *ckks.PublicKey, message []float64) *ckks.Ciphertext {
+	encoder := ckks.NewEncoder(params)
+	slots := uint64(len(message))
+	plaintext := encoder.EncodeNew(floatToComplex(message), slots)
+
+	encryptor := ckks.NewEncryptorFromPk(params, publicKey)
 	return encryptor.EncryptNew(plaintext)
 }
 
-func Decode(params *bfv.Parameters, secretKey *bfv.SecretKey, ciphertext *bfv.Ciphertext, messageLength uint) []uint64 {
-	encoder := bfv.NewEncoder(params)
-
-	decryptor := bfv.NewDecryptor(params, secretKey)
+func Decode(params *ckks.Parameters, secretKey *ckks.SecretKey, ciphertext *ckks.Ciphertext, messageLength uint) []float64 {
+	decryptor := ckks.NewDecryptor(params, secretKey)
 	receivedPlaintext := decryptor.DecryptNew(ciphertext)
 
-	decoded := encoder.DecodeUint(receivedPlaintext)
-
-	ret := make([]uint64, messageLength)
-	copy(ret, decoded)
-	return ret
+	encoder := ckks.NewEncoder(params)
+	decoded := encoder.Decode(receivedPlaintext, uint64(messageLength))
+	return complexToFloat(decoded)
 }
