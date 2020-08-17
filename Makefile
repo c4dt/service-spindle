@@ -1,14 +1,12 @@
 GOROOT := $(shell go env GOROOT)
 
 .PHONY: build
-build: webapp/src/assets/geco-cryptolib-js.wasm
-build: webapp/src/assets/wasm_exec.js
+build: webapp/src/assets/geco-cryptolib.wasm
 
-geco:
-	git clone https://github.com/ldsec/geco $@
+webapp/node_modules/.installed:
+	cd webapp && npm ci
+	touch $@
 
-webapp/src/assets/geco-cryptolib-js.wasm: | geco
-	$(MAKE) -C geco/build/package/cryptolib-js build
-	cp geco/build/package/cryptolib-js/geco-cryptolib-js.wasm $@
-webapp/src/assets/wasm_exec.js: $(GOROOT)/misc/wasm/wasm_exec.js
+webapp/node_modules/geco-cryptolib/geco-cryptolib.wasm: webapp/node_modules/.installed
+webapp/src/assets/geco-cryptolib.wasm: webapp/node_modules/geco-cryptolib/geco-cryptolib.wasm
 	cp $< $@
