@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+message LogisticRegressionRequest {
+	repeated double ToPredict = 1;
+
+	double LearningRate = 2;
+	double ElasticRate = 3;
+
+	uint64 NetworkIterationCount = 4;
+	uint64 LocalIterationCount = 5;
+	uint64 LocalBatchSize = 6;
+}
+
+message LogisticRegressionResponse {
+	bool Prediction = 1;
+}
