@@ -1,0 +1,9 @@
+language: node_js
+node_js: node
+
+cache:
+  npm: false # avoid caching empty node_modules
+
+before_script: npx prettier --check .
+script: make
+after_script: git status --porcelain
