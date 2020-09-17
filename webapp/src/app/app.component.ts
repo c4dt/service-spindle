@@ -1,43 +1,46 @@
-import {Component, OnInit} from '@angular/core'
+import { Component, OnInit } from "@angular/core";
 
-import {ConfigService} from './config.service'
-import {Client} from '../client'
+import { ConfigService } from "./config.service";
+import { Client } from "../client";
 
-import 'geco-cryptolib/geco-cryptolib'
-import {LogisticRegressionRequest} from '../proto'
+import "geco-cryptolib/geco-cryptolib";
+import { LogisticRegressionRequest } from "../proto";
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  selector: "app-root",
+  templateUrl: "./app.component.html",
+  styleUrls: ["./app.component.css"],
 })
 export class AppComponent implements OnInit {
-  constructor(
-    private readonly config: ConfigService,
-  ) {}
+  constructor(private readonly config: ConfigService) {}
 
   async ngOnInit() {
-    const geco_url = new URL('assets/geco-cryptolib.wasm', globalThis.location.href)
-    await GeCoCryptoLibLoad(geco_url)
+    const geco_url = new URL(
+      "assets/geco-cryptolib.wasm",
+      globalThis.location.href
+    );
+    await GeCoCryptoLibLoad(geco_url);
 
-    const client = new Client(this.config.URL)
+    const client = new Client(this.config.URL);
 
-    const ret = await client.logreg(new LogisticRegressionRequest({
-      ToPredict: [6, 148, 72, 35, 0, 33.6, 0.627, 50],
+    const ret = await client.logreg(
+      new LogisticRegressionRequest({
+        ToPredict: [6, 148, 72, 35, 0, 33.6, 0.627, 50],
 
-      LearningRate: 0.01,
-      ElasticRate: 0.01,
+        LearningRate: 0.01,
+        ElasticRate: 0.01,
 
-      LocalIterationCount: 3,
-      LocalBatchSize: 10,
-      NetworkIterationCount: 1,
-    }))
+        LocalIterationCount: 3,
+        LocalBatchSize: 10,
+        NetworkIterationCount: 1,
+      })
+    );
 
     if (ret.Prediction === undefined) {
-      throw new Error('invalid response: prediction undefined')
+      throw new Error("invalid response: prediction undefined");
     }
 
-    console.log(ret.Prediction)
+    console.log(ret.Prediction);
 
     /*
     const encodedCKKS = 'Ag0MQdAAAAAAAABACZmZmZmZmgYBAAAAAf_-wAEAAAAAP_9AAQAAAAA__oABAAAAAEACAAEAAAAAQAOAAQAAAAA__AABAAAACAAAQAE='
@@ -60,8 +63,7 @@ export class AppComponent implements OnInit {
   }
 
   private throwOnError<T>(toCheck: T | Error): T {
-    if (toCheck instanceof Error)
-      throw toCheck
-    return toCheck
+    if (toCheck instanceof Error) throw toCheck;
+    return toCheck;
   }
 }

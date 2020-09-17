@@ -1,7 +1,7 @@
 module.exports = {
   node: {
-    'crypto': true,
-    'fs': 'empty',
-    'os': 'empty',
-  }
-}
+    crypto: true,
+    fs: "empty",
+    os: "empty",
+  },
+};

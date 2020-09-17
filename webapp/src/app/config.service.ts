@@ -1,8 +1,8 @@
-import { Injectable } from '@angular/core';
+import { Injectable } from "@angular/core";
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: "root",
 })
 export class ConfigService {
-  public readonly URL = new URL('ws://localhost:1235')
+  public readonly URL = new URL("ws://localhost:1235");
 }
