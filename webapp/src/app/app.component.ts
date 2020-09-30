@@ -3,7 +3,6 @@ import { Component, OnInit } from "@angular/core";
 import { ConfigService } from "./config.service";
 import { Client } from "../client";
 
-import "geco-cryptolib/geco-cryptolib";
 import { LogisticRegressionRequest } from "../proto";
 
 @Component({
@@ -14,13 +13,7 @@ import { LogisticRegressionRequest } from "../proto";
 export class AppComponent implements OnInit {
   constructor(private readonly config: ConfigService) {}
 
-  async ngOnInit() {
-    const geco_url = new URL(
-      "assets/geco-cryptolib.wasm",
-      globalThis.location.href
-    );
-    await GeCoCryptoLibLoad(geco_url);
-
+  async ngOnInit(): Promise<void> {
     const client = new Client(this.config.URL);
 
     const ret = await client.logreg(
