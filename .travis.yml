@@ -7,7 +7,7 @@ cache:
 before_script:
   - npx prettier --check .
   - ( cd webapp && npm ci && npx eslint --ext ts --max-warnings 0 . )
-script: true # TODO should be `make` but geco is not public
+script: make
 after_script:
   - set -e
   - out=`git status --porcelain`; [ -z "$out" ] || ( git diff && exit 1 )
