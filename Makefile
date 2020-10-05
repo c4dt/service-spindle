@@ -8,5 +8,5 @@ services/%: services/.git/HEAD
 include services/mk/service.mk
 
 $Dprotobuf/proto.json: $Dprotobuf/spindle.proto
-webapp/src/proto.json: $Dprotobuf/proto.json; cp $< $@
-$Swebapp-build: webapp/src/proto.json
+webapp/src/app/proto.json: $Dprotobuf/proto.json; cp $< $@
+$Swebapp-build: webapp/src/app/proto.json
