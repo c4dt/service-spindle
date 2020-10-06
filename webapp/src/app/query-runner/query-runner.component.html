@@ -12,6 +12,9 @@
             <input
               matInput
               type="number"
+              min="0.01"
+              max="1"
+              step="0.01"
               formControlName="learningRate"
             /> </mat-form-field
         ></mat-list-item>
@@ -22,6 +25,9 @@
             <input
               matInput
               type="number"
+              min="0.01"
+              max="1"
+              step="0.01"
               formControlName="elasticRate"
             /> </mat-form-field
         ></mat-list-item>
@@ -32,6 +38,7 @@
             <input
               matInput
               type="number"
+              min="1"
               formControlName="localIterationCount"
             /> </mat-form-field
         ></mat-list-item>
@@ -42,6 +49,7 @@
             <input
               matInput
               type="number"
+              min="1"
               formControlName="localBatchSize"
             /> </mat-form-field
         ></mat-list-item>
@@ -52,6 +60,7 @@
             <input
               matInput
               type="number"
+              min="1"
               formControlName="networkIterationCount"
             /> </mat-form-field
         ></mat-list-item>
