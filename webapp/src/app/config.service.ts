@@ -2,13 +2,16 @@ import { List } from "immutable";
 
 import { Injectable } from "@angular/core";
 
-const datasetBaseURL = "https://demo.c4dt.org/drynx/datasets";
+let locationStripped = globalThis.location.href;
+if (locationStripped.endsWith("/"))
+  locationStripped = locationStripped.substr(0, locationStripped.length - 1);
+const datasetBaseURL = `${locationStripped}/datasets`;
 
 @Injectable({
   providedIn: "root",
 })
 export class ConfigService {
-  public readonly URL = new URL("ws://localhost:1235");
+  public readonly URL = new URL(`${locationStripped}/leader`);
 
   public readonly DataProviders = List.of(
     {
