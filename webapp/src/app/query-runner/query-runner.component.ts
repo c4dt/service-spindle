@@ -21,6 +21,7 @@ type formControlsType = formControlsTypeForNumber | "toPredict";
 @Component({
   selector: "app-query-runner",
   templateUrl: "./query-runner.component.html",
+  styleUrls: ["./query-runner.component.css"],
 })
 export class QueryRunnerComponent {
   public state:
