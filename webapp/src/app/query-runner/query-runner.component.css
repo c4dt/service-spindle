@@ -2,19 +2,21 @@ mat-tab-group {
   height: 100%;
 }
 
-form {
+form,
+mat-progress-bar {
   margin: 10%;
   margin-top: 5%;
   margin-bottom: 0%;
 }
-.result {
-  margin: 10%;
-}
 
-p {
+div p {
   margin: 5%;
 }
 
 mat-form-field {
   width: 100%;
+}
+
+mat-progress-bar {
+  width: auto;
 }

@@ -28,7 +28,7 @@ export class QueryRunnerComponent {
     | ["nothing-ran"]
     | ["loading"]
     | ["loaded", boolean]
-    | ["errored", Error];
+    | ["errored", Error] = ["nothing-ran"];
 
   public tabIndex = 0;
 
@@ -45,9 +45,7 @@ export class QueryRunnerComponent {
     ),
   });
 
-  constructor(private readonly client: ClientService) {
-    this.state = ["nothing-ran"];
-  }
+  constructor(private readonly client: ClientService) {}
 
   private getForm(name: formControlsType): AbstractControl {
     const form = this.queryBuilder.get(name);
@@ -87,9 +85,9 @@ export class QueryRunnerComponent {
 
   async runQuery(query: LogisticRegressionRequest): Promise<void> {
     this.state = ["loading"];
+    this.tabIndex = 1;
 
     try {
-      this.tabIndex = 1;
       const ret = await this.client.logreg(query);
       if (ret.Prediction === undefined)
         throw new Error("invalid response: prediction undefined");
