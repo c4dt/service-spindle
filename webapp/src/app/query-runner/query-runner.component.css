@@ -6,3 +6,7 @@ form,
 .result {
   margin: 10%;
 }
+
+mat-form-field {
+  width: 100%;
+}

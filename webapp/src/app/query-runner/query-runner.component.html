@@ -5,8 +5,8 @@
       (ngSubmit)="runQuery(throwOnUndefined(buildQuery()))"
     >
       <mat-list>
-        <mat-list-item
-          ><mat-form-field>
+        <mat-list-item>
+          <mat-form-field>
             <mat-label>learning rate</mat-label>
             <input
               matInput
@@ -15,11 +15,12 @@
               max="1"
               step="0.01"
               formControlName="learningRate"
-            /> </mat-form-field
-        ></mat-list-item>
+            />
+          </mat-form-field>
+        </mat-list-item>
 
-        <mat-list-item
-          ><mat-form-field>
+        <mat-list-item>
+          <mat-form-field>
             <mat-label>elastic rate</mat-label>
             <input
               matInput
@@ -28,62 +29,63 @@
               max="1"
               step="0.01"
               formControlName="elasticRate"
-            /> </mat-form-field
-        ></mat-list-item>
+            />
+          </mat-form-field>
+        </mat-list-item>
 
-        <mat-list-item
-          ><mat-form-field>
+        <mat-list-item>
+          <mat-form-field>
             <mat-label>local iteration count</mat-label>
             <input
               matInput
               type="number"
               min="1"
               formControlName="localIterationCount"
-            /> </mat-form-field
-        ></mat-list-item>
+            />
+          </mat-form-field>
+        </mat-list-item>
 
-        <mat-list-item
-          ><mat-form-field>
+        <mat-list-item>
+          <mat-form-field>
             <mat-label>local batch size</mat-label>
             <input
               matInput
               type="number"
               min="1"
               formControlName="localBatchSize"
-            /> </mat-form-field
-        ></mat-list-item>
+            />
+          </mat-form-field>
+        </mat-list-item>
 
-        <mat-list-item
-          ><mat-form-field>
+        <mat-list-item>
+          <mat-form-field>
             <mat-label>network iteration count</mat-label>
             <input
               matInput
               type="number"
               min="1"
               formControlName="networkIterationCount"
-            /> </mat-form-field
-        ></mat-list-item>
+            />
+          </mat-form-field>
+        </mat-list-item>
 
-        <mat-list-item
-          ><mat-form-field>
+        <mat-list-item>
+          <mat-form-field>
             <mat-label>to predict</mat-label>
-            <input
-              matInput
-              type="text"
-              formControlName="toPredict"
-            /> </mat-form-field
-        ></mat-list-item>
+            <input matInput type="text" formControlName="toPredict" />
+          </mat-form-field>
+        </mat-list-item>
 
-        <mat-list-item
-          ><button
+        <mat-list-item>
+          <button
             mat-raised-button
             color="primary"
             type="submit"
             [disabled]="!queryBuilder.valid"
           >
             launch
-          </button></mat-list-item
-        >
+          </button>
+        </mat-list-item>
       </mat-list>
     </form>
   </mat-tab>
