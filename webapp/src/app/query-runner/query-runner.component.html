@@ -1,5 +1,17 @@
 <mat-tab-group [(selectedIndex)]="tabIndex">
-  <mat-tab label="query">
+  <mat-tab label="train model">
+    <div>
+      <p>
+        below, you can train a
+        <!-- TODO link to C4DT knowledge database?  -->
+        <a href="https://en.wikipedia.org/wiki/Logistic_regression">
+          logistic regression model
+        </a>
+        across the datasets. then, the trained model is used to predict the
+        outcome of the given row.
+      </p>
+    </div>
+
     <form
       [formGroup]="queryBuilder"
       (ngSubmit)="runQuery(throwOnUndefined(buildQuery()))"
