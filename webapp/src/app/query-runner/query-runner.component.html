@@ -109,11 +109,21 @@
     </ng-container>
 
     <ng-container *ngIf="state[0] === 'errored'">
-      Error: {{ state[1].message }}
+      <div>
+        <p>
+          error encounter when training model and predicting:
+          {{ state[1].message }}
+        </p>
+      </div>
     </ng-container>
 
     <ng-container *ngIf="state[0] === 'loaded'">
-      {{ state[1] }}
+      <div>
+        <p>
+          the trained model predicts that the given row's result would be:
+          {{ state[1] }}
+        </p>
+      </div>
     </ng-container>
   </mat-tab>
 </mat-tab-group>
