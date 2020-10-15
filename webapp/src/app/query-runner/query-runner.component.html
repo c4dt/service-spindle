@@ -102,8 +102,19 @@
   </mat-tab>
 
   <mat-tab label="result">
+    <ng-container
+      *ngIf="
+        state[0] === 'loading' ||
+        state[0] === 'errored' ||
+        state[0] === 'loaded'
+      "
+    >
+      <div>
+        <p>Training model and predicting &ndash; {{ state[1] }}s</p>
+      </div>
+    </ng-container>
+
     <ng-container *ngIf="state[0] === 'loading'">
-      <div><p>Training model and predicting...</p></div>
       <mat-progress-bar mode="buffer"></mat-progress-bar>
     </ng-container>
 
@@ -111,16 +122,15 @@
       <div>
         <p>
           Error encountered when training model and predicting:
-          {{ state[1].message }}
+          {{ state[2].message }}
         </p>
       </div>
     </ng-container>
-
     <ng-container *ngIf="state[0] === 'loaded'">
       <div>
         <p>
-          The trained model predicts that the given row's result would be:
-          <b>{{ state[1] }}</b>
+          The trained model predicts that the given row's result will be:
+          <b>{{ state[2] }}</b>
         </p>
       </div>
     </ng-container>

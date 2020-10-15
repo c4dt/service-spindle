@@ -25,11 +25,10 @@ type formControlsType = formControlsTypeForNumber | "toPredict";
 })
 export class QueryRunnerComponent {
   public state:
-    | ["nothing-ran"]
-    | ["loading"]
-    | ["loaded", boolean]
-    | ["errored", Error] = ["nothing-ran"];
-
+    | ["nothing ran"]
+    | ["loading", number]
+    | ["errored", number, Error]
+    | ["loaded", number, boolean] = ["nothing ran"];
   public tabIndex = 0;
 
   public readonly queryBuilder = new FormGroup({
@@ -84,19 +83,29 @@ export class QueryRunnerComponent {
   }
 
   async runQuery(query: LogisticRegressionRequest): Promise<void> {
-    this.state = ["loading"];
+    this.state = ["loading", 0];
     this.tabIndex = 1;
+
+    let endCounter = false;
+    (async () => {
+      for (let count = 0; !endCounter; count++) {
+        this.state[1] = count;
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+      }
+    })();
 
     try {
       const ret = await this.client.logreg(query);
       if (ret.Prediction === undefined)
-        throw new Error("invalid response: prediction undefined");
+        throw new Error("invalid response: undefined prediction");
 
-      this.state = ["loaded", ret.Prediction];
+      this.state = ["loaded", this.state[1], ret.Prediction];
     } catch (e) {
       const error = e instanceof Error ? e : new Error(e);
-      this.state = ["errored", error];
+      this.state = ["errored", this.state[1], error];
       throw error;
+    } finally {
+      endCounter = true;
     }
   }
 }
