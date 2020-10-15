@@ -2,11 +2,11 @@
   <mat-tab label="train model">
     <div>
       <p>
-        below, you can train a
+        Below, you can train a
         <a href="https://en.wikipedia.org/wiki/Logistic_regression">
           logistic regression model
         </a>
-        across the datasets. then, the trained model is used to predict the
+        across the datasets. Then, the trained model is used to predict the
         outcome of the given row.
       </p>
     </div>
@@ -103,14 +103,14 @@
 
   <mat-tab label="result">
     <ng-container *ngIf="state[0] === 'loading'">
-      <div><p>training model and predicting</p></div>
+      <div><p>Training model and predicting...</p></div>
       <mat-progress-bar mode="buffer"></mat-progress-bar>
     </ng-container>
 
     <ng-container *ngIf="state[0] === 'errored'">
       <div>
         <p>
-          error encounter when training model and predicting:
+          Error encountered when training model and predicting:
           {{ state[1].message }}
         </p>
       </div>
@@ -119,7 +119,7 @@
     <ng-container *ngIf="state[0] === 'loaded'">
       <div>
         <p>
-          the trained model predicts that the given row's result would be:
+          The trained model predicts that the given row's result would be:
           {{ state[1] }}
         </p>
       </div>
