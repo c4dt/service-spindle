@@ -1,16 +1,58 @@
 <mat-tab-group [(selectedIndex)]="tabIndex">
-  <mat-tab label="Train Model">
+  <mat-tab label="Explanations">
     <div>
       <p>
-        Below, you can train a
+        SPINDLE allows to train a
         <a href="https://en.wikipedia.org/wiki/Logistic_regression">
           logistic regression model
         </a>
         across the datasets. Then, the trained model is used to predict the
-        outcome of the given row.
+        outcome of some row.
+        <br />
+        Each dataset is kept private by a dedicated node, and never shared with
+        the other participants of the network. The trained model itself is not
+        revealed to anyone but can be evaluated with a row that only the querier
+        knows.
+        <br />
+        In the next tab, you can choose the parameters of the model to be
+        trained, and the row to predict. The result will be shown in the last
+        tab.
       </p>
-    </div>
 
+      <ul>
+        <ul>
+          <li>
+            <b>Learning rate</b>: how much each iteration is to be taken into
+            account. The greater, the faster it will obtain a solution but the
+            more likely the solution won't be the best one.
+          </li>
+          <li>
+            <b>Elastic rate:</b> how much randomness to add at each local
+            iteration, to try to find a better solution that the previous one.
+          </li>
+          <li>
+            <b>Local iteration count</b>: how many times the local model is
+            trained before doing a network iteration. The greater, the slower it
+            will compute locally but, if the datasets are similar, it would
+            require less network iteration.
+          </li>
+          <li>
+            <b>Local batch size</b>: when computing a local iteration, how many
+            rows to train upon at the same time. The greater, the more precise
+            the solution will be but the more memory it will take.
+          </li>
+          <li>
+            <b>Network iteration count</b>: how many times is the model on the
+            whole network trained, that is computing an aggregatation of each
+            local model, and used this new model the feed the next local
+            iterations.
+          </li>
+        </ul>
+      </ul>
+    </div>
+  </mat-tab>
+
+  <mat-tab label="Train Model">
     <form
       [formGroup]="queryBuilder"
       (ngSubmit)="runQuery(throwOnUndefined(buildQuery()))"
