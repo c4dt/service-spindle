@@ -5,6 +5,7 @@ import {
   Validators,
   AbstractControl,
 } from "@angular/forms";
+import { MatSnackBar } from "@angular/material/snack-bar";
 
 import { ClientService } from "../client.service";
 import { LogisticRegressionRequest } from "../proto";
@@ -43,8 +44,12 @@ export class QueryRunnerComponent {
       Validators.required // TODO validate format
     ),
   });
+  public waiting = false;
 
-  constructor(private readonly client: ClientService) {}
+  constructor(
+    private readonly client: ClientService,
+    private readonly snackbar: MatSnackBar
+  ) {}
 
   private getForm(name: formControlsType): AbstractControl {
     const form = this.queryBuilder.get(name);
@@ -85,6 +90,7 @@ export class QueryRunnerComponent {
   async runQuery(query: LogisticRegressionRequest): Promise<void> {
     this.state = ["loading", 0];
     this.tabIndex = 2;
+    this.waiting = true;
 
     let endCounter = false;
     (async () => {
@@ -100,12 +106,29 @@ export class QueryRunnerComponent {
         throw new Error("invalid response: undefined prediction");
 
       this.state = ["loaded", this.state[1], ret.Prediction];
+      endCounter = true;
     } catch (e) {
       const error = e instanceof Error ? e : new Error(e);
-      this.state = ["errored", this.state[1], error];
-      throw error;
-    } finally {
       endCounter = true;
+
+      if (
+        error.message ===
+        "unexpected error: processing error: call is already running"
+      ) {
+        this.state = ["nothing ran"];
+        this.tabIndex = 1;
+        const snacking = this.snackbar.open(
+          "Currently a training is in process, please try again in one minute."
+        );
+
+        await new Promise((resolve) => setTimeout(resolve, 60 * 1000));
+        snacking.dismiss();
+      } else {
+        this.state = ["errored", this.state[1], error];
+        throw error;
+      }
+    } finally {
+      this.waiting = false;
     }
   }
 }
