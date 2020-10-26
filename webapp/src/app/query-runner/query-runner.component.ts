@@ -84,7 +84,7 @@ export class QueryRunnerComponent {
 
   async runQuery(query: LogisticRegressionRequest): Promise<void> {
     this.state = ["loading", 0];
-    this.tabIndex = 1;
+    this.tabIndex = 2;
 
     let endCounter = false;
     (async () => {
