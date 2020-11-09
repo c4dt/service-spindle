@@ -6,7 +6,6 @@ import { MatGridListModule } from "@angular/material/grid-list";
 import { MatInputModule } from "@angular/material/input";
 import { MatListModule } from "@angular/material/list";
 import { MatProgressBarModule } from "@angular/material/progress-bar";
-import { MatSnackBarModule } from "@angular/material/snack-bar";
 import { MatTabsModule } from "@angular/material/tabs";
 import { BrowserModule } from "@angular/platform-browser";
 import { BrowserAnimationsModule } from "@angular/platform-browser/animations";
@@ -27,7 +26,6 @@ import { QueryRunnerComponent } from "./query-runner/query-runner.component";
     MatInputModule,
     MatListModule,
     MatProgressBarModule,
-    MatSnackBarModule,
     MatTabsModule,
     LibModule,
   ],
