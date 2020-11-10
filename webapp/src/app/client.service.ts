@@ -2,8 +2,15 @@ import { Injectable } from "@angular/core";
 
 import { WebSocketConnection } from "@dedis/cothority/network";
 
-import { LogisticRegressionRequest, LogisticRegressionResponse } from "./proto";
 import { ConfigService } from "./config.service";
+import {
+  LogisticRegressionPredictRequest,
+  LogisticRegressionPredictResponse,
+  LogisticRegressionPredictResponseProtobuf,
+  LogisticRegressionTrainRequest,
+  LogisticRegressionTrainResponse,
+  LogisticRegressionTrainResponseProtobuf,
+} from "./proto";
 
 class Client {
   private readonly connection: WebSocketConnection;
@@ -13,10 +20,26 @@ class Client {
     this.connection.setTimeout(60 * 60 * 1000);
   }
 
-  async logreg(
-    req: LogisticRegressionRequest
-  ): Promise<LogisticRegressionResponse> {
-    return await this.connection.send(req, LogisticRegressionResponse);
+  async logregTrain(
+    req: LogisticRegressionTrainRequest
+  ): Promise<LogisticRegressionTrainResponse> {
+    return new LogisticRegressionTrainResponse(
+      await this.connection.send(
+        req.toProtobuf(),
+        LogisticRegressionTrainResponseProtobuf
+      )
+    );
+  }
+
+  async logregPredict(
+    req: LogisticRegressionPredictRequest
+  ): Promise<LogisticRegressionPredictResponse> {
+    return new LogisticRegressionPredictResponse(
+      await this.connection.send(
+        req.toProtobuf(),
+        LogisticRegressionPredictResponseProtobuf
+      )
+    );
   }
 }
 

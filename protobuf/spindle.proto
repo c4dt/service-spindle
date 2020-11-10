@@ -1,16 +1,22 @@
 syntax = "proto3";
 
-message LogisticRegressionRequest {
-	repeated double ToPredict = 1;
+message LogisticRegressionTrainRequest {
+	double LearningRate = 1;
+	double ElasticRate = 2;
 
-	double LearningRate = 2;
-	double ElasticRate = 3;
-
-	uint64 NetworkIterationCount = 4;
-	uint64 LocalIterationCount = 5;
-	uint64 LocalBatchSize = 6;
+	uint64 NetworkIterationCount = 3;
+	uint64 LocalIterationCount = 4;
+	uint64 LocalBatchSize = 5;
+}
+message LogisticRegressionTrainResponse {
+	bytes ModelID = 1;
 }
 
-message LogisticRegressionResponse {
+message LogisticRegressionPredictRequest {
+	bytes ModelID = 1;
+
+	repeated double ToPredict = 2;
+}
+message LogisticRegressionPredictResponse {
 	bool Prediction = 1;
 }
