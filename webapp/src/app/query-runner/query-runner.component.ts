@@ -42,7 +42,7 @@ export class QueryRunnerComponent {
   });
   public readonly predictForm = new FormGroup({
     toPredict: new FormControl(
-      [6, 148, 72, 35, 0, 33.6, 0.627, 50],
+      List.of(6, 148, 72, 35, 0, 33.6, 0.627, 50).join(" "),
       Validators.required // TODO validate format
     ),
   });
@@ -59,8 +59,13 @@ export class QueryRunnerComponent {
     const form = this.predictForm.get("toPredict");
     if (form === null)
       throw new Error("unable to find form's field: toPredict");
-    console.log("getFormValueToPredict <<", form.value);
-    return List(form.value);
+    const value: string = form.value;
+
+    const ret = List(value.split(" ")).map(Number.parseFloat);
+    if (ret.some(Number.isNaN))
+      throw new Error("unable to parse some elements as float");
+
+    return ret;
   }
 
   async runTrainRequest(): Promise<void> {
