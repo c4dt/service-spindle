@@ -61,7 +61,7 @@ export class QueryRunnerComponent {
       throw new Error("unable to find form's field: toPredict");
     const value: string = form.value;
 
-    const ret = List(value.split(" ")).map(Number.parseFloat);
+    const ret = List(value.trim().split(" ")).map(Number.parseFloat);
     if (ret.some(Number.isNaN))
       throw new Error("unable to parse some elements as float");
 
