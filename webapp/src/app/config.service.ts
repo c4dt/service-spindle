@@ -2,7 +2,7 @@ import { List } from "immutable";
 
 import { Injectable } from "@angular/core";
 
-let locationStripped = "https://demo.c4dt.org/spindle";
+let locationStripped = globalThis.location.href;
 if (locationStripped.endsWith("/"))
   locationStripped = locationStripped.substr(0, locationStripped.length - 1);
 const datasetBaseURL = `${locationStripped}/datasets`;
@@ -12,7 +12,7 @@ const datasetBaseURL = `${locationStripped}/datasets`;
 })
 export class ConfigService {
   public readonly URL = new URL(
-    `${locationStripped.replace(/^https/, "wss")}/leader`
+    `${locationStripped.replace(/^http/, "ws")}/leader`
   );
 
   public readonly DataProviders = List.of(
