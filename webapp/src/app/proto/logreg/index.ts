@@ -1,12 +1,10 @@
-import { addJSON, registerMessage } from "@dedis/cothority/protobuf";
+import { registerMessage } from "@dedis/cothority/protobuf";
 import { List } from "immutable";
 import { Message } from "protobufjs/light";
 
-import proto from "./proto.json";
+import "..";
 
-addJSON(proto);
-
-export class LogisticRegressionTrainRequestProtobuf extends Message<LogisticRegressionTrainRequestProtobuf> {
+export class TrainRequestProtobuf extends Message<TrainRequestProtobuf> {
   readonly LearningRate?: number;
   readonly ElasticRate?: number;
 
@@ -14,11 +12,8 @@ export class LogisticRegressionTrainRequestProtobuf extends Message<LogisticRegr
   readonly LocalIterationCount?: number;
   readonly LocalBatchSize?: number;
 }
-registerMessage(
-  "LogisticRegressionTrainRequest",
-  LogisticRegressionTrainRequestProtobuf
-);
-export class LogisticRegressionTrainRequest {
+registerMessage("TrainRequest", TrainRequestProtobuf);
+export class TrainRequest {
   constructor(
     readonly LearningRate: number,
     readonly ElasticRate: number,
@@ -28,8 +23,8 @@ export class LogisticRegressionTrainRequest {
     readonly LocalBatchSize: number
   ) {}
 
-  toProtobuf(): LogisticRegressionTrainRequestProtobuf {
-    return new LogisticRegressionTrainRequestProtobuf({
+  toProtobuf(): TrainRequestProtobuf {
+    return new TrainRequestProtobuf({
       LearningRate: this.LearningRate,
       ElasticRate: this.ElasticRate,
       NetworkIterationCount: this.NetworkIterationCount,
@@ -54,53 +49,44 @@ export class ModelID {
   }
 }
 
-export class LogisticRegressionTrainResponseProtobuf extends Message<LogisticRegressionTrainResponseProtobuf> {
+export class TrainResponseProtobuf extends Message<TrainResponseProtobuf> {
   readonly ModelID?: Uint8Array;
 }
-registerMessage(
-  "LogisticRegressionTrainResponse",
-  LogisticRegressionTrainResponseProtobuf
-);
-export class LogisticRegressionTrainResponse {
+registerMessage("TrainResponse", TrainResponseProtobuf);
+export class TrainResponse {
   readonly ModelID: ModelID;
 
-  constructor(msg: LogisticRegressionTrainResponseProtobuf) {
+  constructor(msg: TrainResponseProtobuf) {
     if (msg.ModelID === undefined) throw new Error("undefined field");
 
     this.ModelID = new ModelID(List(msg.ModelID));
   }
 }
 
-export class LogisticRegressionPredictRequestProtobuf extends Message<LogisticRegressionPredictRequestProtobuf> {
+export class PredictRequestProtobuf extends Message<PredictRequestProtobuf> {
   readonly ModelID?: Uint8Array;
   readonly ToPredict?: number[];
 }
-registerMessage(
-  "LogisticRegressionPredictRequest",
-  LogisticRegressionPredictRequestProtobuf
-);
-export class LogisticRegressionPredictRequest {
+registerMessage("PredictRequest", PredictRequestProtobuf);
+export class PredictRequest {
   constructor(readonly ModelID: ModelID, readonly ToPredict: List<number>) {}
 
-  toProtobuf(): LogisticRegressionPredictRequestProtobuf {
-    return new LogisticRegressionPredictRequestProtobuf({
+  toProtobuf(): PredictRequestProtobuf {
+    return new PredictRequestProtobuf({
       ModelID: this.ModelID.asArray(),
       ToPredict: this.ToPredict.toArray(),
     });
   }
 }
 
-export class LogisticRegressionPredictResponseProtobuf extends Message<LogisticRegressionPredictResponseProtobuf> {
+export class PredictResponseProtobuf extends Message<PredictResponseProtobuf> {
   readonly Prediction?: boolean;
 }
-registerMessage(
-  "LogisticRegressionPredictResponse",
-  LogisticRegressionPredictResponseProtobuf
-);
-export class LogisticRegressionPredictResponse {
+registerMessage("PredictResponse", PredictResponseProtobuf);
+export class PredictResponse {
   readonly Prediction: boolean;
 
-  constructor(msg: LogisticRegressionPredictResponseProtobuf) {
+  constructor(msg: PredictResponseProtobuf) {
     if (msg.Prediction === undefined) throw new Error("undefined field");
 
     this.Prediction = msg.Prediction;

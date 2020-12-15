@@ -3,11 +3,7 @@ import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { List } from "immutable";
 
 import { ClientService } from "../client.service";
-import {
-  LogisticRegressionPredictRequest,
-  LogisticRegressionTrainRequest,
-  ModelID,
-} from "../proto";
+import { PredictRequest, TrainRequest, ModelID } from "../proto/logreg";
 
 type trainFormControlsType =
   | "learningRate"
@@ -69,7 +65,7 @@ export class QueryRunnerComponent {
   }
 
   async runTrainRequest(): Promise<void> {
-    const query = new LogisticRegressionTrainRequest(
+    const query = new TrainRequest(
       this.getTrainFormValue("learningRate"),
       this.getTrainFormValue("elasticRate"),
 
@@ -114,7 +110,7 @@ export class QueryRunnerComponent {
     )
       throw new Error(`unexpected state: ${this.state[0]}`);
 
-    const query = new LogisticRegressionPredictRequest(
+    const query = new PredictRequest(
       this.state[1][1],
       this.getFormValueToPredict()
     );

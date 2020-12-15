@@ -1,6 +1,6 @@
 syntax = "proto3";
 
-message LogisticRegressionTrainRequest {
+message TrainRequest {
 	double LearningRate = 1;
 	double ElasticRate = 2;
 
@@ -8,15 +8,15 @@ message LogisticRegressionTrainRequest {
 	uint64 LocalIterationCount = 4;
 	uint64 LocalBatchSize = 5;
 }
-message LogisticRegressionTrainResponse {
+message TrainResponse {
 	bytes ModelID = 1;
 }
 
-message LogisticRegressionPredictRequest {
+message PredictRequest {
 	bytes ModelID = 1;
 
 	repeated double ToPredict = 2;
 }
-message LogisticRegressionPredictResponse {
+message PredictResponse {
 	bool Prediction = 1;
 }

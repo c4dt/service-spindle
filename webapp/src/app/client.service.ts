@@ -4,13 +4,13 @@ import { WebSocketConnection } from "@dedis/cothority/network";
 
 import { ConfigService } from "./config.service";
 import {
-  LogisticRegressionPredictRequest,
-  LogisticRegressionPredictResponse,
-  LogisticRegressionPredictResponseProtobuf,
-  LogisticRegressionTrainRequest,
-  LogisticRegressionTrainResponse,
-  LogisticRegressionTrainResponseProtobuf,
-} from "./proto";
+  PredictRequest,
+  PredictResponse,
+  PredictResponseProtobuf,
+  TrainRequest,
+  TrainResponse,
+  TrainResponseProtobuf,
+} from "./proto/logreg";
 
 class Client {
   private readonly connection: WebSocketConnection;
@@ -20,25 +20,15 @@ class Client {
     this.connection.setTimeout(60 * 60 * 1000);
   }
 
-  async logregTrain(
-    req: LogisticRegressionTrainRequest
-  ): Promise<LogisticRegressionTrainResponse> {
-    return new LogisticRegressionTrainResponse(
-      await this.connection.send(
-        req.toProtobuf(),
-        LogisticRegressionTrainResponseProtobuf
-      )
+  async logregTrain(req: TrainRequest): Promise<TrainResponse> {
+    return new TrainResponse(
+      await this.connection.send(req.toProtobuf(), TrainResponseProtobuf)
     );
   }
 
-  async logregPredict(
-    req: LogisticRegressionPredictRequest
-  ): Promise<LogisticRegressionPredictResponse> {
-    return new LogisticRegressionPredictResponse(
-      await this.connection.send(
-        req.toProtobuf(),
-        LogisticRegressionPredictResponseProtobuf
-      )
+  async logregPredict(req: PredictRequest): Promise<PredictResponse> {
+    return new PredictResponse(
+      await this.connection.send(req.toProtobuf(), PredictResponseProtobuf)
     );
   }
 }
