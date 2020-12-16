@@ -8,8 +8,15 @@ message TrainRequest {
 	uint64 LocalIterationCount = 4;
 	uint64 LocalBatchSize = 5;
 }
+message TrainResponseProgress {
+	uint32 Local = 1;
+	uint32 Global = 2;
+}
 message TrainResponse {
-	bytes ModelID = 1;
+	string Error = 1;
+	TrainResponseProgress Progress = 2;
+
+	bytes ModelID = 3;
 }
 
 message PredictRequest {

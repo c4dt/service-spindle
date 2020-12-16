@@ -1,4 +1,6 @@
 import { Injectable } from "@angular/core";
+import { Observable } from "rxjs";
+import { map } from "rxjs/operators";
 
 import { WebSocketConnection } from "@dedis/cothority/network";
 
@@ -20,10 +22,10 @@ class Client {
     this.connection.setTimeout(60 * 60 * 1000);
   }
 
-  async logregTrain(req: TrainRequest): Promise<TrainResponse> {
-    return new TrainResponse(
-      await this.connection.send(req.toProtobuf(), TrainResponseProtobuf)
-    );
+  logregTrain(req: TrainRequest): Observable<TrainResponse> {
+    return this.connection
+      .sendStream(req.toProtobuf(), TrainResponseProtobuf)
+      .pipe(map((t) => new TrainResponse(t[0])));
   }
 
   async logregPredict(req: PredictRequest): Promise<PredictResponse> {

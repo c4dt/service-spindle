@@ -49,17 +49,59 @@ export class ModelID {
   }
 }
 
+export class TrainResponseProgressProtobuf extends Message<TrainResponseProgressProtobuf> {
+  readonly Local?: number;
+  readonly Global?: number;
+}
+registerMessage("TrainResponseProgress", TrainResponseProgressProtobuf);
+export class TrainResponseProgress {
+  readonly Local: number;
+  readonly Global: number;
+
+  constructor(msg: TrainResponseProgressProtobuf) {
+    if (msg.Local === undefined) throw new Error("undefined field");
+    if (msg.Global === undefined) throw new Error("undefined field");
+
+    this.Local = msg.Local;
+    this.Global = msg.Global;
+  }
+}
+
 export class TrainResponseProtobuf extends Message<TrainResponseProtobuf> {
+  readonly Error?: string;
+  readonly Progress?: TrainResponseProgressProtobuf;
+
   readonly ModelID?: Uint8Array;
 }
 registerMessage("TrainResponse", TrainResponseProtobuf);
 export class TrainResponse {
-  readonly ModelID: ModelID;
+  readonly Value:
+    | ["error", Error]
+    | ["progress", TrainResponseProgress]
+    | ["result", ModelID];
 
   constructor(msg: TrainResponseProtobuf) {
-    if (msg.ModelID === undefined) throw new Error("undefined field");
+    const keys = Object.keys(msg);
+    if (keys.length !== 1) throw new Error("must define a single field");
 
-    this.ModelID = new ModelID(List(msg.ModelID));
+    switch (keys[0]) {
+      case "Progress":
+        this.Value = [
+          "progress",
+          new TrainResponseProgress(
+            msg.Progress as TrainResponseProgressProtobuf
+          ),
+        ];
+        break;
+      case "Error":
+        this.Value = ["error", new Error(msg.Error)];
+        break;
+      case "ModelID":
+        this.Value = ["result", new ModelID(List(msg.ModelID as Uint8Array))];
+        break;
+      default:
+        throw new Error("unknown field definied");
+    }
   }
 }
 

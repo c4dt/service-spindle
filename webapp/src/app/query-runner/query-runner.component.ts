@@ -12,7 +12,7 @@ type trainFormControlsType =
   | "localBatchSize"
   | "networkIterationCount";
 
-type stateTrainResult = [count: number, modelID: ModelID];
+type trainingProgress = [local: number, global: number];
 
 @Component({
   selector: "app-query-runner",
@@ -22,11 +22,11 @@ type stateTrainResult = [count: number, modelID: ModelID];
 export class QueryRunnerComponent {
   public state:
     | ["nothing ran"]
-    | ["training", [count: number]]
-    | ["train error", [count: number, error: Error]]
-    | ["trained", stateTrainResult]
-    | ["predict error", stateTrainResult, [error: Error]]
-    | ["predicted", stateTrainResult, [result: boolean]] = ["nothing ran"];
+    | ["training", trainingProgress | undefined]
+    | ["train error", Error]
+    | ["trained", ModelID]
+    | ["predict error", ModelID, Error]
+    | ["predicted", ModelID, boolean] = ["nothing ran"];
   public tabIndex = 0;
 
   public readonly trainForm = new FormGroup({
@@ -65,41 +65,48 @@ export class QueryRunnerComponent {
   }
 
   async runTrainRequest(): Promise<void> {
+    const localIterations = this.getTrainFormValue("localIterationCount");
+    const globalIterations = this.getTrainFormValue("networkIterationCount");
+
     const query = new TrainRequest(
       this.getTrainFormValue("learningRate"),
       this.getTrainFormValue("elasticRate"),
 
-      this.getTrainFormValue("networkIterationCount"),
-      this.getTrainFormValue("localIterationCount"),
+      globalIterations,
+      localIterations,
       this.getTrainFormValue("localBatchSize")
     );
 
-    this.state = ["training", [0]];
+    this.state = ["training", undefined];
     this.tabIndex = 2;
 
-    let endCounter = false;
-    (async () => {
-      for (let count = 0; !endCounter; count++) {
-        if (this.state[0] !== "training")
-          throw new Error(`unexpected state: ${this.state[0]}`);
-        this.state[1][0] = count;
-        await new Promise((resolve) => setTimeout(resolve, 1000));
+    const stream = this.client.logregTrain(query);
+
+    stream.subscribe(
+      (progress) => {
+        switch (progress.Value[0]) {
+          case "progress":
+            this.state = [
+              "training",
+              [
+                (progress.Value[1].Local / localIterations) * 100,
+                (progress.Value[1].Global / globalIterations) * 100,
+              ],
+            ];
+            break;
+          case "error":
+            // TODO can throw?
+            this.state = ["train error", progress.Value[1]];
+            break;
+          case "result":
+            this.state = ["trained", progress.Value[1]];
+        }
+      },
+      (error) => {
+        this.state = ["train error", error];
+        throw error;
       }
-    })();
-
-    try {
-      const ret = await this.client.logregTrain(query);
-      if (ret.ModelID === undefined)
-        throw new Error("invalid response: undefined model id");
-
-      endCounter = true;
-      this.state = ["trained", [this.state[1][0], ret.ModelID]];
-    } catch (e) {
-      const error = e instanceof Error ? e : new Error(e);
-      endCounter = true;
-      this.state = ["train error", [this.state[1][0], error]];
-      throw error;
-    }
+    );
   }
 
   async runPredictRequest(): Promise<void> {
@@ -111,7 +118,7 @@ export class QueryRunnerComponent {
       throw new Error(`unexpected state: ${this.state[0]}`);
 
     const query = new PredictRequest(
-      this.state[1][1],
+      this.state[1],
       this.getFormValueToPredict()
     );
 
@@ -120,10 +127,10 @@ export class QueryRunnerComponent {
       if (ret.Prediction === undefined)
         throw new Error("invalid response: undefined prediction");
 
-      this.state = ["predicted", this.state[1], [ret.Prediction]];
+      this.state = ["predicted", this.state[1], ret.Prediction];
     } catch (e) {
       const error = e instanceof Error ? e : new Error(e);
-      this.state = ["predict error", this.state[1], [error]];
+      this.state = ["predict error", this.state[1], error];
       throw error;
     }
   }

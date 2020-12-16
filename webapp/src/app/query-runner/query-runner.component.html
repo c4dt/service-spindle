@@ -147,16 +147,28 @@
       "
     >
       <div>
-        <p>Training model &ndash; {{ state[1][0] }}s / 20-40s</p>
+        <p>Training model</p>
       </div>
     </ng-container>
 
     <ng-container *ngIf="state[0] === 'training'">
-      <mat-progress-bar mode="buffer"></mat-progress-bar>
+      <ng-container *ngIf="state[1] === undefined">
+        <mat-progress-bar mode="buffer"></mat-progress-bar>
+      </ng-container>
+      <ng-container *ngIf="state[1] !== undefined">
+        <mat-progress-bar
+          mode="determinate"
+          value="{{ state[1][0] }}"
+        ></mat-progress-bar>
+        <mat-progress-bar
+          mode="determinate"
+          value="{{ state[1][1] }}"
+        ></mat-progress-bar>
+      </ng-container>
     </ng-container>
     <ng-container *ngIf="state[0] === 'train error'">
       <div>
-        <p>Error encountered when training model: {{ state[1][1].message }}</p>
+        <p>Error encountered when training model: {{ state[1].message }}</p>
       </div>
     </ng-container>
 
@@ -168,7 +180,7 @@
       "
     >
       <div>
-        <p>Model ID: {{ state[1][1] }}</p>
+        <p>Model ID: {{ state[1] }}</p>
       </div>
 
       <form [formGroup]="predictForm" (ngSubmit)="runPredictRequest()">
@@ -204,7 +216,7 @@
     </ng-container>
     <ng-container *ngIf="state[0] === 'predict error'">
       <div>
-        <p>Error encountered when training model: {{ state[2][0].message }}</p>
+        <p>Error encountered when training model: {{ state[2].message }}</p>
       </div>
     </ng-container>
   </mat-tab>
