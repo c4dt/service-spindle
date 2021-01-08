@@ -6,9 +6,7 @@ import proto from "./proto.json";
 
 addJSON(proto);
 
-export class LogisticRegressionTrainRequestProtobuf extends Message<
-  LogisticRegressionTrainRequestProtobuf
-> {
+export class LogisticRegressionTrainRequestProtobuf extends Message<LogisticRegressionTrainRequestProtobuf> {
   readonly LearningRate?: number;
   readonly ElasticRate?: number;
 
@@ -56,9 +54,7 @@ export class ModelID {
   }
 }
 
-export class LogisticRegressionTrainResponseProtobuf extends Message<
-  LogisticRegressionTrainResponseProtobuf
-> {
+export class LogisticRegressionTrainResponseProtobuf extends Message<LogisticRegressionTrainResponseProtobuf> {
   readonly ModelID?: Uint8Array;
 }
 registerMessage(
@@ -75,9 +71,7 @@ export class LogisticRegressionTrainResponse {
   }
 }
 
-export class LogisticRegressionPredictRequestProtobuf extends Message<
-  LogisticRegressionPredictRequestProtobuf
-> {
+export class LogisticRegressionPredictRequestProtobuf extends Message<LogisticRegressionPredictRequestProtobuf> {
   readonly ModelID?: Uint8Array;
   readonly ToPredict?: number[];
 }
@@ -96,9 +90,7 @@ export class LogisticRegressionPredictRequest {
   }
 }
 
-export class LogisticRegressionPredictResponseProtobuf extends Message<
-  LogisticRegressionPredictResponseProtobuf
-> {
+export class LogisticRegressionPredictResponseProtobuf extends Message<LogisticRegressionPredictResponseProtobuf> {
   readonly Prediction?: boolean;
 }
 registerMessage(
