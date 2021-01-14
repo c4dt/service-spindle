@@ -1,6 +1,6 @@
 <mat-tab-group [(selectedIndex)]="tabIndex">
   <mat-tab label="Explanations">
-    <div>
+    <div class="tab-content">
       <p>
         SPINDLE enables the training of
         <a href="https://en.wikipedia.org/wiki/Generalized_linear_model"
@@ -23,40 +23,41 @@
       </p>
 
       <ul>
-        <ul>
-          <li>
-            <b>Learning rate</b>: how much each iteration is to be taken into
-            account. The greater, the faster it will obtain a solution but the
-            more likely the solution won't be the best one.
-          </li>
-          <li>
-            <b>Elastic rate:</b> how much randomness to add at each local
-            iteration, to try to find a better solution that the previous one.
-          </li>
-          <li>
-            <b>Local iteration count</b>: how many times the local model is
-            trained before doing a network iteration. The greater, the slower it
-            will compute locally but, if the datasets are similar, it would
-            require less network iterations.
-          </li>
-          <li>
-            <b>Local batch size</b>: when computing a local iteration, how many
-            labelled data samples to train upon at the same time. The greater,
-            the more precise the solution will be but the more memory it will
-            take.
-          </li>
-          <li>
-            <b>Network iteration count</b>: how many times is the model on the
-            whole network trained, that is computing an aggregatation of each
-            local model, and used this to feed the next local iterations.
-          </li>
-        </ul>
+        <li>
+          <b>Learning rate</b>: how much each iteration is to be taken into
+          account. The greater, the faster it will obtain a solution but the
+          more likely the solution won't be the best one.
+        </li>
+        <li>
+          <b>Elastic rate:</b> how much randomness to add at each local
+          iteration, to try to find a better solution that the previous one.
+        </li>
+        <li>
+          <b>Local iteration count</b>: how many times the local model is
+          trained before doing a network iteration. The greater, the slower it
+          will compute locally but, if the datasets are similar, it would
+          require less network iterations.
+        </li>
+        <li>
+          <b>Local batch size</b>: when computing a local iteration, how many
+          labelled data samples to train upon at the same time. The greater, the
+          more precise the solution will be but the more memory it will take.
+        </li>
+        <li>
+          <b>Network iteration count</b>: how many times is the model on the
+          whole network trained, that is computing an aggregatation of each
+          local model, and used this to feed the next local iterations.
+        </li>
       </ul>
     </div>
   </mat-tab>
 
   <mat-tab label="Train Model">
-    <form [formGroup]="trainForm" (ngSubmit)="runTrainRequest()">
+    <form
+      [formGroup]="trainForm"
+      (ngSubmit)="runTrainRequest()"
+      class="tab-content"
+    >
       <mat-list>
         <mat-list-item>
           <mat-form-field>
@@ -137,62 +138,64 @@
   </mat-tab>
 
   <mat-tab label="Predict with a Model">
-    <ng-container
-      *ngIf="
-        state[0] === 'training' ||
-        state[0] === 'train error' ||
-        state[0] === 'trained' ||
-        state[0] === 'predict error' ||
-        state[0] === 'predicted'
-      "
-    >
-      <div>
-        <p>Training model</p>
-      </div>
-    </ng-container>
-
-    <ng-container *ngIf="state[0] === 'training'">
-      <ng-container *ngIf="state[1] === undefined">
-        <mat-progress-bar mode="buffer"></mat-progress-bar>
-      </ng-container>
-      <ng-container *ngIf="state[1] !== undefined">
-        <mat-progress-bar
-          mode="determinate"
-          value="{{ state[1][0] }}"
-        ></mat-progress-bar>
-        <mat-progress-bar
-          mode="determinate"
-          value="{{ state[1][1] }}"
-        ></mat-progress-bar>
-      </ng-container>
-    </ng-container>
-    <ng-container *ngIf="state[0] === 'train error'">
-      <div>
-        <p>Error encountered when training model: {{ state[1].message }}</p>
-      </div>
-    </ng-container>
-
-    <ng-container
-      *ngIf="
-        state[0] === 'trained' ||
-        state[0] === 'predict error' ||
-        state[0] === 'predicted'
-      "
-    >
-      <div>
-        <p>Model ID: {{ state[1] }}</p>
+    <div fxLayout="column" class="tab-content">
+      <div *ngIf="state[0] === 'training'" class="result-line">
+        Training model...
       </div>
 
-      <form [formGroup]="predictForm" (ngSubmit)="runPredictRequest()">
-        <mat-list>
-          <mat-list-item>
+      <div
+        *ngIf="state[0] === 'training' || state[0] === 'train error'"
+        class="result-line"
+      >
+        <ng-container *ngIf="state[0] === 'training'">
+          <ng-container *ngIf="state[1] === undefined">
+            <div fxLayout>
+              Connecting
+              <mat-progress-bar mode="buffer"></mat-progress-bar>
+            </div>
+          </ng-container>
+          <ng-container *ngIf="state[1] !== undefined">
+            <div fxLayout>
+              Local
+              <mat-progress-bar
+                mode="determinate"
+                value="{{ state[1][0] }}"
+              ></mat-progress-bar>
+            </div>
+            <div fxLayout>
+              Network
+              <mat-progress-bar
+                mode="determinate"
+                value="{{ state[1][1] }}"
+              ></mat-progress-bar>
+            </div>
+          </ng-container>
+        </ng-container>
+        <ng-container *ngIf="state[0] === 'train error'">
+          Error encountered when training model: {{ state[1].message }}
+        </ng-container>
+      </div>
+
+      <div
+        *ngIf="
+          state[0] === 'trained' ||
+          state[0] === 'predict error' ||
+          state[0] === 'predicted'
+        "
+      >
+        <div class="result-line">Model ID: {{ state[1] }}</div>
+
+        <div class="result-line">
+          <form
+            [formGroup]="predictForm"
+            (ngSubmit)="runPredictRequest()"
+            class="result-line"
+          >
             <mat-form-field>
               <mat-label>To predict</mat-label>
               <input matInput type="text" formControlName="toPredict" />
             </mat-form-field>
-          </mat-list-item>
 
-          <mat-list-item>
             <button
               mat-raised-button
               color="primary"
@@ -201,23 +204,19 @@
             >
               Predict
             </button>
-          </mat-list-item>
-        </mat-list>
-      </form>
-    </ng-container>
+          </form>
+        </div>
+      </div>
 
-    <ng-container *ngIf="state[0] === 'predicted'">
-      <div>
-        <p>
+      <div class="result-line">
+        <ng-container *ngIf="state[0] === 'predicted'">
           The trained model predicts that the given unlabelled data sample's
           label will be: <b>{{ state[2] }}</b>
-        </p>
+        </ng-container>
+        <ng-container *ngIf="state[0] === 'predict error'">
+          Error encountered when training model: {{ state[2].message }}
+        </ng-container>
       </div>
-    </ng-container>
-    <ng-container *ngIf="state[0] === 'predict error'">
-      <div>
-        <p>Error encountered when training model: {{ state[2].message }}</p>
-      </div>
-    </ng-container>
+    </div>
   </mat-tab>
 </mat-tab-group>

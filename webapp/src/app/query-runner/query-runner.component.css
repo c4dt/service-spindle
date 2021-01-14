@@ -1,22 +1,19 @@
-mat-tab-group {
-  height: 100%;
-}
-
-form,
-mat-progress-bar {
-  margin: 10%;
-  margin-top: 5%;
-  margin-bottom: 0%;
-}
-
-div p {
+.tab-content {
   margin: 5%;
+  width: calc(100% - 10%);
+
+  text-align: justify;
 }
 
 mat-form-field {
   width: 100%;
 }
 
+.result-line {
+  margin: 10px;
+}
+
 mat-progress-bar {
-  width: auto;
+  margin: auto;
+  margin-left: 10px;
 }

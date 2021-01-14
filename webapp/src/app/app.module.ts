@@ -1,4 +1,5 @@
 import { NgModule } from "@angular/core";
+import { FlexLayoutModule } from "@angular/flex-layout";
 import { ReactiveFormsModule } from "@angular/forms";
 import { MatButtonModule } from "@angular/material/button";
 import { MatFormFieldModule } from "@angular/material/form-field";
@@ -19,6 +20,7 @@ import { QueryRunnerComponent } from "./query-runner/query-runner.component";
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
+    FlexLayoutModule,
     ReactiveFormsModule,
     MatButtonModule,
     MatFormFieldModule,
