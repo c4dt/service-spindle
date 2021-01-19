@@ -8,7 +8,7 @@ cache:
   npm: false # avoid caching empty node_modules
 
 before_script:
-  - npx prettier --check .
+  - npx prettier@2.2.1 --check .
   - ( cd webapp && npm ci && npx eslint --ext ts --max-warnings 0 . )
 script: make
 after_script:
