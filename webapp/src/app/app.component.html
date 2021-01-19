@@ -1,21 +1,24 @@
-<mat-grid-list cols="2" rowHeight="50%" gutterSize="20">
-  <mat-grid-tile>
-    <app-query-runner style="width: 100%; height: 100%"></app-query-runner>
-  </mat-grid-tile>
-  <mat-grid-tile
-    style="border: solid"
-    *ngFor="let dataset of datasets; let i = index"
-  >
-    <mat-grid-tile-header>Node {{ i + 1 }}</mat-grid-tile-header>
-    <lib-revealer>
-      <lib-revealer-label>
-        This data is hidden in the node and cannot be seen by the querier.
-        <br />
-        Only updates to the model in encrypted form will ever leave this node.
-        <br />
-        For demonstration purposes, however, you can have a look at the data.
-      </lib-revealer-label>
-      <lib-table-viewer [table]="dataset | async"> </lib-table-viewer>
-    </lib-revealer>
-  </mat-grid-tile>
-</mat-grid-list>
+<div style="height: 1%"></div>
+<div style="height: 97%; width: 98%; margin: auto">
+  <mat-grid-list cols="2" rowHeight="fit" gutterSize="2%" style="height: 100%">
+    <mat-grid-tile>
+      <app-query-runner style="width: 100%; height: 100%"></app-query-runner>
+    </mat-grid-tile>
+    <mat-grid-tile
+      style="border: solid"
+      *ngFor="let dataset of datasets; let i = index"
+    >
+      <mat-grid-tile-header>Node {{ i + 1 }}</mat-grid-tile-header>
+      <lib-revealer>
+        <lib-revealer-label>
+          This data is hidden in the node and cannot be seen by the querier.
+          <br />
+          Only updates to the model in encrypted form will ever leave this node.
+          <br />
+          For demonstration purposes, however, you can have a look at the data.
+        </lib-revealer-label>
+        <lib-table-viewer [table]="dataset | async"> </lib-table-viewer>
+      </lib-revealer>
+    </mat-grid-tile>
+  </mat-grid-list>
+</div>
