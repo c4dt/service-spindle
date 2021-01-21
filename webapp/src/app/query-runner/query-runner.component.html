@@ -1,4 +1,7 @@
-<mat-tab-group [(selectedIndex)]="tabIndex">
+<mat-tab-group
+  [(selectedIndex)]="tabIndex"
+  class="mat-tab-fill-height full-size"
+>
   <mat-tab label="Explanations">
     <div class="tab-content">
       <p>
@@ -25,8 +28,8 @@
   </mat-tab>
 
   <mat-tab label="Train Model">
-    <div fxLayout="row" fxFlex="90%">
-      <div fxLayout="column" fxFlex="30%" style="margin: auto">
+    <div fxLayout="row" fxLayoutAlign="center center" class="full-size">
+      <div fxFlex="30%">
         <form [formGroup]="trainForm" (ngSubmit)="runTrainRequest()">
           <mat-list>
             <mat-list-item>
@@ -106,7 +109,7 @@
           </mat-list>
         </form>
       </div>
-      <div fxLayout="column" fxFlex>
+      <div fxFlex="50%">
         <ul>
           <li>
             <b>Learning rate</b>: how much each iteration is to be taken into

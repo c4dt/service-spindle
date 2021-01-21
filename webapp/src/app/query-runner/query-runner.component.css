@@ -1,8 +1,6 @@
 .tab-content {
   margin: 5%;
   width: calc(100% - 10%);
-
-  text-align: justify;
 }
 
 mat-form-field {
