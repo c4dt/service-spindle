@@ -5,3 +5,13 @@ lib-revealer {
   height: calc(100% - 48px);
   width: 100%;
 }
+
+.small-vspace {
+  height: 1%;
+}
+
+.white-border {
+  height: 97%;
+  width: 98%;
+  margin: auto;
+}
