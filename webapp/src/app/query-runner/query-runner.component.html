@@ -5,24 +5,30 @@
   <mat-tab label="Explanations">
     <div class="tab-content">
       <p>
-        SPINDLE enables the training of
+        SPINDLE enables some statistics on distributed databases without
+        revealing any data. It does so by using a new kind of cryptography,
+        allowing to apply common mathematical operation on encrypted data and
+        only revealing the result.
+      </p>
+      <p>
+        In this demo, we only show a fraction of SPINDLE, namely the training of
         <a href="https://en.wikipedia.org/wiki/Generalized_linear_model"
           >generalized linear models</a
-        >
-        across federated datasets. This demo showcases the training of a
-        <a href="https://en.wikipedia.org/wiki/Logistic_regression">
-          logistic regression model </a
-        >. The trained model can then be used to perform predictions on
-        unlabelled data samples.
+        >. It is a statistical method to predict the outcome of a given row of
+        data, based on a known set of representative values, the dataset.
+      </p>
+      <p>
+        The shown tables are a set of several medical metrics, easily
+        measurable, and show if the patient has diabetes. Thus we will be able
+        to predict if someone is likely diabetic, or not.
         <br />
-        Each dataset is kept private by a dedicated node, and never shared with
-        the other participants of the network. The trained model itself is not
-        revealed to anyone but can be evaluated with an unlabelled data sample
-        that only the querier knows.
-        <br />
-        In the next tab, you can choose the parameters of the model to be
-        trained, and the unlabelled data sample to predict. The result will be
-        shown in the last tab.
+        Each table is stored on a separated node, nothing is shared in clear,
+        yet, by cooperating with each others, the network can deliver the
+        results to you.
+      </p>
+      <p>
+        Now, you can move to the next part, where you will train a model using
+        SPINDLE.
       </p>
     </div>
   </mat-tab>
