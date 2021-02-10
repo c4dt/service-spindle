@@ -45,6 +45,10 @@ export class QueryRunnerComponent {
 
   constructor(private readonly client: ClientService) {}
 
+  public nextPage(): void {
+    this.tabIndex += 1;
+  }
+
   private getTrainFormValue(name: trainFormControlsType): number {
     const form = this.trainForm.get(name);
     if (form === null) throw new Error(`unable to find form's field: ${name}`);
