@@ -3,9 +3,14 @@
   width: calc(100% - 10%);
 }
 
-mat-form-field {
+.tab-content > *,
+.form-with-hint > mat-form-field {
+  margin-bottom: 15px;
+}
+
+mat-form-field,
+button {
   width: 100%;
-  margin-bottom: 20px;
 }
 
 .result-line {

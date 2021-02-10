@@ -34,88 +34,103 @@
   </mat-tab>
 
   <mat-tab label="Train Model">
-    <form
-      [formGroup]="trainForm"
-      (ngSubmit)="runTrainRequest()"
-      class="tab-content"
-    >
-      <mat-form-field>
-        <mat-label>Learning rate</mat-label>
-        <input
-          matInput
-          type="number"
-          min="0.01"
-          max="1"
-          step="0.01"
-          formControlName="learningRate"
-        />
-        <mat-hint>
-          how much each local iteration is to be taken into account
-        </mat-hint>
-      </mat-form-field>
+    <div class="tab-content">
+      <p>
+        Here, you can train a model using SPINDLE. Each parameter below controls
+        some of the modeling process. It isn't a finite computation, rather each
+        is a trade-off between accuracy and time.
+      </p>
 
-      <mat-form-field>
-        <mat-label>Elastic rate</mat-label>
-        <input
-          matInput
-          type="number"
-          min="0.01"
-          max="1"
-          step="0.01"
-          formControlName="elasticRate"
-        />
-        <mat-hint>
-          how much randomness to add at each local iteration
-        </mat-hint>
-      </mat-form-field>
-
-      <mat-form-field>
-        <mat-label>Local iteration count</mat-label>
-        <input
-          matInput
-          type="number"
-          min="1"
-          formControlName="localIterationCount"
-        />
-        <mat-hint>
-          how many times the model is locally trained before doing a network
-          iteration
-        </mat-hint>
-      </mat-form-field>
-
-      <mat-form-field>
-        <mat-label>Local batch size</mat-label>
-        <input
-          matInput
-          type="number"
-          min="1"
-          formControlName="localBatchSize"
-        />
-        <mat-hint> how many rows to train upon at the same time </mat-hint>
-      </mat-form-field>
-
-      <mat-form-field>
-        <mat-label>Network iteration count (epochs)</mat-label>
-        <input
-          matInput
-          type="number"
-          min="1"
-          formControlName="networkIterationCount"
-        />
-        <mat-hint>
-          how many times the local models are merged with the others
-        </mat-hint>
-      </mat-form-field>
-
-      <button
-        mat-raised-button
-        color="primary"
-        type="submit"
-        [disabled]="!trainForm.valid"
+      <form
+        [formGroup]="trainForm"
+        (ngSubmit)="runTrainRequest()"
+        class="form-with-hint"
       >
-        Train
-      </button>
-    </form>
+        <mat-form-field>
+          <mat-label>Learning rate</mat-label>
+          <input
+            matInput
+            type="number"
+            min="0.01"
+            max="1"
+            step="0.01"
+            formControlName="learningRate"
+          />
+          <mat-hint>
+            how much each local iteration is to be taken into account
+          </mat-hint>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Elastic rate</mat-label>
+          <input
+            matInput
+            type="number"
+            min="0.01"
+            max="1"
+            step="0.01"
+            formControlName="elasticRate"
+          />
+          <mat-hint>
+            how much randomness to add at each local iteration
+          </mat-hint>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Local iteration count</mat-label>
+          <input
+            matInput
+            type="number"
+            min="1"
+            formControlName="localIterationCount"
+          />
+          <mat-hint>
+            how many times the model is locally trained before doing a network
+            iteration
+          </mat-hint>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Local batch size</mat-label>
+          <input
+            matInput
+            type="number"
+            min="1"
+            formControlName="localBatchSize"
+          />
+          <mat-hint> how many rows to train upon at the same time </mat-hint>
+        </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>Network iteration count (epochs)</mat-label>
+          <input
+            matInput
+            type="number"
+            min="1"
+            formControlName="networkIterationCount"
+          />
+          <mat-hint>
+            how many times the local models are merged with the others
+          </mat-hint>
+        </mat-form-field>
+
+        <p>
+          When you are happy with the settings you selected, you can launch the
+          training by clicking on the button below. It will take you to the next
+          part where you will be able to actually predict with your trained
+          model.
+        </p>
+
+        <button
+          mat-raised-button
+          color="primary"
+          type="submit"
+          [disabled]="!trainForm.valid"
+        >
+          Train
+        </button>
+      </form>
+    </div>
   </mat-tab>
 
   <mat-tab label="Predict with a Model">
