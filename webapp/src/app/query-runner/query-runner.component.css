@@ -13,10 +13,6 @@ button {
   width: 100%;
 }
 
-.result-line {
-  margin: 10px;
-}
-
 mat-progress-bar {
   margin: auto;
   margin-left: 10px;

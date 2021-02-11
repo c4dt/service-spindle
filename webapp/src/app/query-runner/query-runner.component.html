@@ -137,15 +137,16 @@
   </mat-tab>
 
   <mat-tab label="Predict with a Model">
-    <div fxLayout="column" class="tab-content">
-      <div *ngIf="state[0] === 'training'" class="result-line">
-        Training model...
-      </div>
+    <div class="tab-content">
+      <p *ngIf="state[0] === 'training' || state[0] === 'train error'">
+        Now, we are waiting for SPINDLE to build the model. Each node computes a
+        local model based on its dataset. When it did enough local round, a
+        network model is created by merging each local ones together. Then a new
+        local round is started, merged with the rest of the network, and so on,
+        each iteration yielding a better model.
+      </p>
 
-      <div
-        *ngIf="state[0] === 'training' || state[0] === 'train error'"
-        class="result-line"
-      >
+      <div *ngIf="state[0] === 'training' || state[0] === 'train error'">
         <ng-container *ngIf="state[0] === 'training'">
           <ng-container *ngIf="state[1] === undefined">
             <div fxLayout>
@@ -171,7 +172,8 @@
           </ng-container>
         </ng-container>
         <ng-container *ngIf="state[0] === 'train error'">
-          Error encountered when training model: {{ state[1].message }}
+          Oops, it seems that an error occurred when training the model:
+          {{ state[1].message }}
         </ng-container>
       </div>
 
@@ -182,48 +184,57 @@
           state[0] === 'predicted'
         "
       >
-        <div class="result-line">Model ID: {{ state[1] }}</div>
+        <p>
+          The model is now computed and you can use it to know if your patient
+          is likely to have diabetes. Simply fill the questionnaire below and
+          ask SPINDLE to predict the result.
+        </p>
 
-        <div class="result-line" *ngIf="predict === undefined">
-          Loading dataset's columns...
-        </div>
-        <div class="result-line" *ngIf="predict !== undefined">
-          <form
-            [formGroup]="predict.form"
-            (ngSubmit)="runPredictRequest()"
-            class="result-line"
+        <p *ngIf="predict === undefined">Loading dataset's columns...</p>
+        <form
+          [formGroup]="predict.form"
+          (ngSubmit)="runPredictRequest()"
+          *ngIf="predict !== undefined"
+        >
+          <mat-form-field *ngFor="let field of predict.fields">
+            <mat-label>{{ field.name }}</mat-label>
+            <input
+              matInput
+              type="{{ field.type }}"
+              step="{{ field.step }}"
+              formControlName="{{ field.name }}"
+            />
+          </mat-form-field>
+
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            [disabled]="!predict.form.valid"
           >
-            <mat-form-field *ngFor="let field of predict.fields">
-              <mat-label>{{ field.name }}</mat-label>
-              <input
-                matInput
-                type="{{ field.type }}"
-                step="{{ field.step }}"
-                formControlName="{{ field.name }}"
-              />
-            </mat-form-field>
-
-            <button
-              mat-raised-button
-              color="primary"
-              type="submit"
-              [disabled]="!predict.form.valid"
-            >
-              Predict
-            </button>
-          </form>
-        </div>
+            Predict
+          </button>
+        </form>
       </div>
 
-      <div class="result-line">
+      <p>
         <ng-container *ngIf="state[0] === 'predicted'">
-          The trained model predicts that the given unlabelled data sample's
-          label will be: <b>{{ state[2] }}</b>
+          The trained model predicts that the patient is
+          <ng-container *ngIf="state[2]"> <b>diabetic</b></ng-container>
+          <ng-container *ngIf="!state[2]"> <b>not diabetic</b></ng-container
+          >.
         </ng-container>
         <ng-container *ngIf="state[0] === 'predict error'">
-          Error encountered when training model: {{ state[2].message }}
+          Oops, it seems that an error occurred when predict using the trained
+          model: {{ state[2].message }}
         </ng-container>
-      </div>
+      </p>
+
+      <p *ngIf="state[0] === 'predicted'">
+        If you find that your model is not predicting correctly, try playing
+        around with the settings in the previous tab and generate a preciser
+        model until you are happy with how it is behaving.
+      </p>
     </div>
   </mat-tab>
 </mat-tab-group>
