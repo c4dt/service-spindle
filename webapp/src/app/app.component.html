@@ -2,7 +2,10 @@
 <div class="white-border">
   <mat-grid-list cols="2" rowHeight="fit" gutterSize="2%" class="full-size">
     <mat-grid-tile>
-      <app-query-runner class="full-size"></app-query-runner>
+      <app-query-runner
+        class="full-size"
+        [table]="dataset | async"
+      ></app-query-runner>
     </mat-grid-tile>
     <mat-grid-tile
       style="border: solid"

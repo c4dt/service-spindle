@@ -12,6 +12,7 @@ import { ConfigService } from "./config.service";
   styleUrls: ["./app.component.css"],
 })
 export class AppComponent {
+  public readonly dataset: Promise<Table>;
   public readonly datasets: List<Promise<Table>>;
 
   constructor(config: ConfigService) {
@@ -20,5 +21,9 @@ export class AppComponent {
         fetchDataset(dp.datasetURL, dp.datasetTypesURL)
       )
     );
+
+    const dataset = this.datasets.first(undefined);
+    if (dataset === undefined) throw new Error("no dataset");
+    this.dataset = dataset;
   }
 }

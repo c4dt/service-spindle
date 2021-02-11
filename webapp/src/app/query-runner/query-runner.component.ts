@@ -1,6 +1,8 @@
-import { Component } from "@angular/core";
+import { List, Map } from "immutable";
+
+import { Component, Input, OnChanges } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
-import { List } from "immutable";
+import { NumberColumn, Table } from "@c4dt/angular-components";
 
 import { ClientService } from "../client.service";
 import { PredictRequest, TrainRequest, ModelID } from "../proto/logreg";
@@ -19,7 +21,9 @@ type trainingProgress = [local: number, global: number];
   templateUrl: "./query-runner.component.html",
   styleUrls: ["./query-runner.component.css"],
 })
-export class QueryRunnerComponent {
+export class QueryRunnerComponent implements OnChanges {
+  @Input() public table: Table | null | undefined;
+
   public state:
     | ["nothing ran"]
     | ["training", trainingProgress | undefined]
@@ -36,14 +40,42 @@ export class QueryRunnerComponent {
     localBatchSize: new FormControl(10, Validators.required),
     networkIterationCount: new FormControl(1, Validators.required),
   });
-  public readonly predictForm = new FormGroup({
-    toPredict: new FormControl(
-      List.of(6, 148, 72, 35, 0, 33.6, 0.627, 50).join(" "),
-      Validators.required // TODO validate format
-    ),
-  });
+  public predict:
+    | {
+        form: FormGroup;
+        fields: List<{ name: string; type: string; step: number }>;
+      }
+    | undefined;
 
   constructor(private readonly client: ClientService) {}
+
+  public ngOnChanges(): void {
+    if (this.table === null || this.table === undefined) return;
+    const columns = this.table.columns.pop();
+
+    this.predict = {
+      form: new FormGroup(
+        columns
+          .reduce((acc, column) => {
+            const value = (column.rows.first as () => unknown)();
+            return acc.set(
+              column.name,
+              new FormControl(value, Validators.required)
+            );
+          }, Map<string, FormControl>())
+          .toObject()
+      ),
+      fields: columns.map((column) => {
+        if (!(column instanceof NumberColumn))
+          throw new Error("unable to input column type");
+        return {
+          name: column.name,
+          type: "number",
+          step: 0.1 ** column.decimalCount,
+        };
+      }),
+    };
+  }
 
   public nextPage(): void {
     this.tabIndex += 1;
@@ -56,16 +88,15 @@ export class QueryRunnerComponent {
   }
 
   private getFormValueToPredict(): List<number> {
-    const form = this.predictForm.get("toPredict");
-    if (form === null)
-      throw new Error("unable to find form's field: toPredict");
-    const value: string = form.value;
+    if (this.predict === undefined) throw new Error("no predictForm definied");
+    const predict = this.predict;
 
-    const ret = List(value.trim().split(" ")).map(Number.parseFloat);
-    if (ret.some(Number.isNaN))
-      throw new Error("unable to parse some elements as float");
-
-    return ret;
+    return this.predict.fields.map((field) => {
+      const form = predict.form.get(field.name);
+      if (form === null)
+        throw new Error(`unable to find form's field: {field.label}`);
+      return form.value;
+    });
   }
 
   async runTrainRequest(): Promise<void> {
