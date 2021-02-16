@@ -49,43 +49,14 @@
         (ngSubmit)="runTrainRequest()"
         class="form-with-hint"
       >
-        <mat-form-field>
-          <mat-label>Learning rate</mat-label>
-          <input
-            matInput
-            type="number"
-            min="0.01"
-            max="1"
-            step="0.01"
-            formControlName="learningRate"
-          />
-          <mat-hint>
-            how much each local iteration is to be taken into account
-          </mat-hint>
-        </mat-form-field>
-
-        <mat-form-field>
-          <mat-label>Elastic rate</mat-label>
-          <input
-            matInput
-            type="number"
-            min="0.01"
-            max="1"
-            step="0.01"
-            formControlName="elasticRate"
-          />
-          <mat-hint>
-            how much randomness to add at each local iteration
-          </mat-hint>
-        </mat-form-field>
-
-        <mat-form-field>
-          <mat-label>Local iteration count</mat-label>
+        <mat-form-field class="train">
+          <mat-label> Local iteration count </mat-label>
           <input
             matInput
             type="number"
             min="1"
             formControlName="localIterationCount"
+            required
           />
           <mat-hint>
             how many times the model is locally trained before doing a network
@@ -93,24 +64,14 @@
           </mat-hint>
         </mat-form-field>
 
-        <mat-form-field>
-          <mat-label>Local batch size</mat-label>
-          <input
-            matInput
-            type="number"
-            min="1"
-            formControlName="localBatchSize"
-          />
-          <mat-hint> how many rows to train upon at the same time </mat-hint>
-        </mat-form-field>
-
-        <mat-form-field>
+        <mat-form-field class="train">
           <mat-label>Network iteration count (epochs)</mat-label>
           <input
             matInput
             type="number"
             min="1"
             formControlName="networkIterationCount"
+            required
           />
           <mat-hint>
             how many times the local models are merged with the others
@@ -129,9 +90,67 @@
           color="primary"
           type="submit"
           [disabled]="!trainForm.valid"
+          style="width: 85%"
         >
           Train
         </button>
+        <button
+          mat-raised-button
+          color="primary"
+          type="button"
+          (click)="toggleSettings()"
+          style="width: auto"
+        >
+          <mat-icon>settings</mat-icon>
+        </button>
+
+        <div class="settings" *ngIf="settingsOpened">
+          <span>Learning rate</span>
+          <mat-form-field>
+            <input
+              matInput
+              type="number"
+              min="0.01"
+              max="1"
+              step="0.01"
+              formControlName="learningRate"
+              required
+            />
+          </mat-form-field>
+          <span class="setting-description">
+            how much each local iteration is to be taken into account
+          </span>
+
+          <span>Elastic rate</span>
+          <mat-form-field>
+            <input
+              matInput
+              type="number"
+              min="0.01"
+              max="1"
+              step="0.01"
+              formControlName="elasticRate"
+              required
+            />
+          </mat-form-field>
+          <span class="setting-description">
+            how much randomness to add at each local iteration
+          </span>
+
+          <span>Local batch size</span>
+          <mat-form-field>
+            <input
+              matInput
+              type="number"
+              min="1"
+              formControlName="localBatchSize"
+              required
+            />
+          </mat-form-field>
+          <span class="setting-description">
+            how many rows to train upon at the same time
+          </span>
+        </div>
       </form>
     </div>
   </mat-tab>
@@ -203,6 +222,7 @@
               type="{{ field.type }}"
               step="{{ field.step }}"
               formControlName="{{ field.name }}"
+              required
             />
           </mat-form-field>
 

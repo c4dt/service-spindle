@@ -8,9 +8,25 @@
   margin-bottom: 15px;
 }
 
-mat-form-field,
-button {
+button,
+mat-form-field {
   width: 100%;
+}
+
+.settings {
+  margin-top: 10px;
+  display: grid;
+  grid-template-columns: auto 80px auto;
+  column-gap: 10px;
+}
+.settings span {
+  margin-top: auto;
+  margin-bottom: auto;
+  text-align: right;
+}
+.settings .setting-description {
+  color: gray;
+  text-align: left;
 }
 
 mat-progress-bar {

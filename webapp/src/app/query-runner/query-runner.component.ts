@@ -32,13 +32,15 @@ export class QueryRunnerComponent implements OnChanges {
     | ["predict error", ModelID, Error]
     | ["predicted", ModelID, boolean] = ["nothing ran"];
   public tabIndex = 0;
+  public settingsOpened = false;
 
   public readonly trainForm = new FormGroup({
+    localIterationCount: new FormControl(3, Validators.required),
+    networkIterationCount: new FormControl(4, Validators.required),
+
     learningRate: new FormControl(0.01, Validators.required),
     elasticRate: new FormControl(0.01, Validators.required),
-    localIterationCount: new FormControl(3, Validators.required),
     localBatchSize: new FormControl(10, Validators.required),
-    networkIterationCount: new FormControl(4, Validators.required),
   });
   public predict:
     | {
@@ -81,6 +83,10 @@ export class QueryRunnerComponent implements OnChanges {
     this.tabIndex += 1;
   }
 
+  public toggleSettings(): void {
+    this.settingsOpened = !this.settingsOpened;
+  }
+
   private getTrainFormValue(name: trainFormControlsType): number {
     const form = this.trainForm.get(name);
     if (form === null) throw new Error(`unable to find form's field: ${name}`);
@@ -109,6 +115,7 @@ export class QueryRunnerComponent implements OnChanges {
 
       globalIterations,
       localIterations,
+
       this.getTrainFormValue("localBatchSize")
     );
 
