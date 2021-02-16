@@ -38,7 +38,7 @@ export class QueryRunnerComponent implements OnChanges {
     elasticRate: new FormControl(0.01, Validators.required),
     localIterationCount: new FormControl(3, Validators.required),
     localBatchSize: new FormControl(10, Validators.required),
-    networkIterationCount: new FormControl(1, Validators.required),
+    networkIterationCount: new FormControl(4, Validators.required),
   });
   public predict:
     | {
