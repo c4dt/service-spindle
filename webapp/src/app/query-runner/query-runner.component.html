@@ -177,15 +177,25 @@
             <div fxLayout>
               Local
               <mat-progress-bar
+                mode="indeterminate"
+                *ngIf="state[1][0] == 0 && state[1][1] == 0"
+              ></mat-progress-bar>
+              <mat-progress-bar
                 mode="determinate"
                 value="{{ state[1][0] }}"
+                *ngIf="state[1][0] > 0 || state[1][1] > 0"
               ></mat-progress-bar>
             </div>
             <div fxLayout>
               Network
               <mat-progress-bar
+                mode="indeterminate"
+                *ngIf="state[1][1] == 0"
+              ></mat-progress-bar>
+              <mat-progress-bar
                 mode="determinate"
                 value="{{ state[1][1] }}"
+                *ngIf="state[1][1] > 0"
               ></mat-progress-bar>
             </div>
           </ng-container>
