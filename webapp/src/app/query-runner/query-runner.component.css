@@ -3,14 +3,23 @@
   width: calc(100% - 10%);
 }
 
-.tab-content > *,
-.form-with-hint > mat-form-field {
+.tab-content > * {
   margin-bottom: 15px;
 }
 
-button,
-mat-form-field {
+button {
   width: 100%;
+}
+
+.form-fields {
+  justify-content: space-between;
+}
+.form-fields > mat-form-field {
+  width: 45%;
+}
+
+.train {
+  margin-bottom: 30px;
 }
 
 .settings {

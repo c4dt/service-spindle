@@ -49,34 +49,36 @@
         (ngSubmit)="runTrainRequest()"
         class="form-with-hint"
       >
-        <mat-form-field class="train">
-          <mat-label> Local iteration count </mat-label>
-          <input
-            matInput
-            type="number"
-            min="1"
-            formControlName="localIterationCount"
-            required
-          />
-          <mat-hint>
-            how many times the model is locally trained before doing a network
-            iteration
-          </mat-hint>
-        </mat-form-field>
+        <div class="form-fields" fxLayout fxLayoutGap="15px grid">
+          <mat-form-field class="train">
+            <mat-label> Local iteration count </mat-label>
+            <input
+              matInput
+              type="number"
+              min="1"
+              formControlName="localIterationCount"
+              required
+            />
+            <mat-hint>
+              how many times the model is locally trained before doing a network
+              iteration
+            </mat-hint>
+          </mat-form-field>
 
-        <mat-form-field class="train">
-          <mat-label>Network iteration count (epochs)</mat-label>
-          <input
-            matInput
-            type="number"
-            min="1"
-            formControlName="networkIterationCount"
-            required
-          />
-          <mat-hint>
-            how many times the local models are merged with the others
-          </mat-hint>
-        </mat-form-field>
+          <mat-form-field class="train">
+            <mat-label>Network iteration count (epochs)</mat-label>
+            <input
+              matInput
+              type="number"
+              min="1"
+              formControlName="networkIterationCount"
+              required
+            />
+            <mat-hint>
+              how many times the local models are merged with the others
+            </mat-hint>
+          </mat-form-field>
+        </div>
 
         <p>
           When you are happy with the settings you selected, you can launch the
@@ -225,16 +227,18 @@
           (ngSubmit)="runPredictRequest()"
           *ngIf="predict !== undefined"
         >
-          <mat-form-field *ngFor="let field of predict.fields">
-            <mat-label>{{ field.name }}</mat-label>
-            <input
-              matInput
-              type="{{ field.type }}"
-              step="{{ field.step }}"
-              formControlName="{{ field.name }}"
-              required
-            />
-          </mat-form-field>
+          <div class="form-fields" fxLayout="row wrap" fxLayoutGap="15px grid">
+            <mat-form-field *ngFor="let field of predict.fields">
+              <mat-label>{{ field.name }}</mat-label>
+              <input
+                matInput
+                type="{{ field.type }}"
+                step="{{ field.step }}"
+                formControlName="{{ field.name }}"
+                required
+              />
+            </mat-form-field>
+          </div>
 
           <button
             mat-raised-button
