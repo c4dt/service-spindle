@@ -36,7 +36,7 @@ export class QueryRunnerComponent implements OnChanges {
 
   public readonly trainForm = new FormGroup({
     localIterationCount: new FormControl(3, Validators.required),
-    networkIterationCount: new FormControl(4, Validators.required),
+    networkIterationCount: new FormControl(2, Validators.required),
 
     learningRate: new FormControl(0.01, Validators.required),
     elasticRate: new FormControl(0.01, Validators.required),
