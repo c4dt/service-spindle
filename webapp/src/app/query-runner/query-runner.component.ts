@@ -45,7 +45,12 @@ export class QueryRunnerComponent implements OnChanges {
   public predict:
     | {
         form: FormGroup;
-        fields: List<{ name: string; type: string; step: number }>;
+        fields: List<{
+          name: string;
+          type: string;
+          value: number;
+          step: number;
+        }>;
       }
     | undefined;
 
@@ -73,6 +78,7 @@ export class QueryRunnerComponent implements OnChanges {
         return {
           name: column.name,
           type: "number",
+          value: (column.rows.first as () => number)(),
           step: 0.1 ** column.decimalCount,
         };
       }),

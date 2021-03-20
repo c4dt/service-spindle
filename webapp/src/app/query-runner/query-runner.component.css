@@ -11,6 +11,14 @@ button {
   width: 100%;
 }
 
+.mat-cell,
+.mat-header-cell {
+  padding: 5px;
+  align-items: center;
+  overflow: hidden;
+  word-wrap: break-word;
+}
+
 .form-fields {
   justify-content: space-between;
 }
