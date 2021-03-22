@@ -12,12 +12,19 @@ button {
 }
 
 .mat-header-cell {
-  display: flex;
+  padding: 5px;
+  align-items: center;
+  overflow: hidden;
+  word-wrap: break-word;
+
 }
 
 .mat-cell {
   padding: 5px;
-  display: flex;
+  align-items: center;
+  overflow: hidden;
+  word-wrap: break-word;
+
 }
 
 

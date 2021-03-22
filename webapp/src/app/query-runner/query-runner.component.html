@@ -222,37 +222,30 @@
         </p>
 
         <p *ngIf="predict === undefined">Loading dataset's columns...</p>
-        <table 
-        mat-table
-        *ngIf="predict !== undefined" >
-        <tr>
-          <ng-container *ngFor="let field of predict.fields"> 
-              <th mat-header-cell class="mat-header-cell cdk-header-cell" >{{ field.name }}</th>
-          </ng-container>
-          
-        </tr>
-        <tr>
-          <ng-container *ngFor="let field of predict.fields">
-            <td mat-cell class="mat-cell cdk-cell" >{{ field.value }}</td>
-          </ng-container>
-        </tr>
-            <!--<th mat-header-cell *matHeaderCellDef> {{ field.name }} </th>
+        <table mat-table *ngIf="predict !== undefined">
+          <tr>
+            <ng-container *ngFor="let field of predict.fields">
+              <th mat-header-cell class="mat-header-cell cdk-header-cell">
+                {{ field.name }}
+              </th>
+            </ng-container>
+          </tr>
+          <tr>
+            <ng-container *ngFor="let field of predict.fields">
+              <td mat-cell class="mat-cell cdk-cell">{{ field.value }}</td>
+            </ng-container>
+          </tr>
+          <!--<th mat-header-cell *matHeaderCellDef> {{ field.name }} </th>
             <td mat-cell *matCellDef>{{ field.value }}</td>-->
-          
+
           <!--<tr mat-header-row *matHeaderRowDef="field. "></tr> 
           <tr mat-row *matRowDef="let field; columns: columnsToDisplay"></tr>s-->
-
         </table>
 
-        <button
-        mat-raised-button
-        color="primary"
-        (click)="runPredictRequest()"
-      >
-        Predict
-      </button>
-        
-        
+        <button mat-raised-button color="primary" (click)="runPredictRequest()">
+          Predict
+        </button>
+
         <!--<form
           [formGroup]="predict.form"
           (ngSubmit)="runPredictRequest()"
@@ -282,8 +275,7 @@
             Predict
           </button>
         </form>
-      -->
-      </div>
+      --></div>
 
       <p>
         <ng-container *ngIf="state[0] === 'predicted'">
