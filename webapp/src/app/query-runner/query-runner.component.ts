@@ -2,7 +2,7 @@ import { List, Map } from "immutable";
 
 import { Component, Input, OnChanges } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
-import {MatTableModule} from '@angular/material/table'; 
+import { MatTableModule } from "@angular/material/table";
 import { NumberColumn, Table } from "@c4dt/angular-components";
 
 import { ClientService } from "../client.service";
@@ -46,7 +46,12 @@ export class QueryRunnerComponent implements OnChanges {
   public predict:
     | {
         form: FormGroup;
-        fields: List<{ name: string; type: string;value: number ;step: number }>;
+        fields: List<{
+          name: string;
+          type: string;
+          value: number;
+          step: number;
+        }>;
       }
     | undefined;
 
@@ -69,8 +74,6 @@ export class QueryRunnerComponent implements OnChanges {
           .toObject()
       ),
       fields: columns.map((column) => {
-       
-
         if (!(column instanceof NumberColumn))
           throw new Error("unable to input column type");
         return {

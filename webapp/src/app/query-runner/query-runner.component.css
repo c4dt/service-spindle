@@ -16,7 +16,6 @@ button {
   align-items: center;
   overflow: hidden;
   word-wrap: break-word;
-
 }
 
 .mat-cell {
@@ -24,9 +23,7 @@ button {
   align-items: center;
   overflow: hidden;
   word-wrap: break-word;
-
 }
-
 
 .form-fields {
   justify-content: space-between;
