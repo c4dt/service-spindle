@@ -5,7 +5,8 @@
     <mat-grid-tile>
       <app-query-runner
         class="full-size"
-        [table]="dataset | async"
+        *ngIf="selectedRow !== undefined"
+        [selectedRow]="selectedRow"
       ></app-query-runner>
     </mat-grid-tile>
     <mat-grid-tile
@@ -20,7 +21,11 @@
           However for demonstration purposes, you can click to reveal it.
           <br />
         </lib-revealer-label>
-        <lib-table-viewer [table]="dataset | async"> </lib-table-viewer>
+        <lib-table-viewer
+          [table]="dataset | async"
+          (selectedRow)="selectedRow = $event.pop()"
+        >
+        </lib-table-viewer>
       </lib-revealer>
     </mat-grid-tile>
   </mat-grid-list>

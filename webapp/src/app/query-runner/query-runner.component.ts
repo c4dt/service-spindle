@@ -2,7 +2,11 @@ import { List, Map } from "immutable";
 
 import { Component, Input, OnChanges } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
-import { NumberColumn, Table } from "@c4dt/angular-components";
+import {
+  ColumnTypes,
+  NumberColumn,
+  StringColumn,
+} from "@c4dt/angular-components";
 
 import { ClientService } from "../client.service";
 import { PredictRequest, TrainRequest, ModelID } from "../proto/logreg";
@@ -22,7 +26,7 @@ type trainingProgress = [local: number, global: number];
   styleUrls: ["./query-runner.component.css"],
 })
 export class QueryRunnerComponent implements OnChanges {
-  @Input() public table: Table | null | undefined;
+  @Input() public selectedRow: List<ColumnTypes> | null | undefined;
 
   public state:
     | ["nothing ran"]
@@ -45,24 +49,20 @@ export class QueryRunnerComponent implements OnChanges {
   public predict:
     | {
         form: FormGroup;
-        fields: List<{
-          name: string;
-          type: string;
-          value: number;
-          step: number;
-        }>;
+        fields: List<{ name: string; value: unknown }>;
       }
     | undefined;
 
   constructor(private readonly client: ClientService) {}
 
   public ngOnChanges(): void {
-    if (this.table === null || this.table === undefined) return;
-    const columns = this.table.columns.pop();
+    if (this.selectedRow === null || this.selectedRow === undefined) return;
+    if (this.selectedRow.some((column) => column.rows.size !== 1))
+      throw new Error("selectedRow isn't a single row");
 
     this.predict = {
       form: new FormGroup(
-        columns
+        this.selectedRow
           .reduce((acc, column) => {
             const value = (column.rows.first as () => unknown)();
             return acc.set(
@@ -72,14 +72,10 @@ export class QueryRunnerComponent implements OnChanges {
           }, Map<string, FormControl>())
           .toObject()
       ),
-      fields: columns.map((column) => {
-        if (!(column instanceof NumberColumn))
-          throw new Error("unable to input column type");
+      fields: this.selectedRow.map((column) => {
         return {
           name: column.name,
-          type: "number",
-          value: (column.rows.first as () => number)(),
-          step: 0.1 ** column.decimalCount,
+          value: (column.rows.first as () => unknown)(),
         };
       }),
     };
@@ -97,18 +93,6 @@ export class QueryRunnerComponent implements OnChanges {
     const form = this.trainForm.get(name);
     if (form === null) throw new Error(`unable to find form's field: ${name}`);
     return form.value;
-  }
-
-  private getFormValueToPredict(): List<number> {
-    if (this.predict === undefined) throw new Error("no predictForm definied");
-    const predict = this.predict;
-
-    return this.predict.fields.map((field) => {
-      const form = predict.form.get(field.name);
-      if (form === null)
-        throw new Error(`unable to find form's field: {field.label}`);
-      return form.value;
-    });
   }
 
   async runTrainRequest(): Promise<void> {
@@ -164,10 +148,18 @@ export class QueryRunnerComponent implements OnChanges {
       this.state[0] !== "predicted"
     )
       throw new Error(`unexpected state: ${this.state[0]}`);
+    if (this.selectedRow === undefined || this.selectedRow === null)
+      throw new Error("row not selected");
 
     const query = new PredictRequest(
       this.state[1],
-      this.getFormValueToPredict()
+      this.selectedRow.map((column) => {
+        if (column instanceof NumberColumn) return column.rows.first();
+        // TODO avoid magical parse
+        else if (column instanceof StringColumn)
+          return parseFloat(column.rows.first());
+        throw new Error("can only predict with numbers");
+      })
     );
 
     try {

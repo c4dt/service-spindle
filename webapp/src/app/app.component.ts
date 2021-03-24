@@ -2,7 +2,13 @@ import { List } from "immutable";
 
 import { Component } from "@angular/core";
 
-import { Table, fetchDataset, BreadCrumb } from "@c4dt/angular-components";
+import {
+  BreadCrumb,
+  Table,
+  fetchDataset,
+  ColumnTypes,
+  NumberColumn,
+} from "@c4dt/angular-components";
 
 import { ConfigService } from "./config.service";
 
@@ -12,8 +18,8 @@ import { ConfigService } from "./config.service";
   styleUrls: ["./app.component.css"],
 })
 export class AppComponent {
-  public readonly dataset: Promise<Table>;
   public readonly datasets: List<Promise<Table>>;
+  public selectedRow: List<ColumnTypes> | undefined;
 
   public readonly showcaseBreadCrumb: BreadCrumb = {
     label: "SPINDLE",
@@ -29,6 +35,19 @@ export class AppComponent {
 
     const dataset = this.datasets.first(undefined);
     if (dataset === undefined) throw new Error("no dataset");
-    this.dataset = dataset;
+
+    dataset.then((dataset) => {
+      this.selectedRow = dataset.columns.pop().map((column) => {
+        if (!(column instanceof NumberColumn))
+          throw new Error("only supports number's only dataset");
+        const elem = column.rows.first(undefined);
+        if (elem === undefined) throw new Error("no elements");
+        return new NumberColumn(
+          column.name,
+          List.of(elem),
+          column.decimalCount
+        );
+      });
+    });
   }
 }
