@@ -2,7 +2,6 @@ import { List, Map } from "immutable";
 
 import { Component, Input, OnChanges } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
-import { MatTableModule } from "@angular/material/table";
 import { NumberColumn, Table } from "@c4dt/angular-components";
 
 import { ClientService } from "../client.service";
