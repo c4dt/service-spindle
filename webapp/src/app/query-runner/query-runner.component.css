@@ -11,14 +11,7 @@ button {
   width: 100%;
 }
 
-.mat-header-cell {
-  padding: 5px;
-  align-items: center;
-  overflow: hidden;
-  word-wrap: break-word;
-}
-
-.mat-cell {
+.mat-cell, .mat-header-cell {
   padding: 5px;
   align-items: center;
   overflow: hidden;
