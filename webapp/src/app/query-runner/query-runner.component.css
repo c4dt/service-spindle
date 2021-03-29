@@ -11,7 +11,8 @@ button {
   width: 100%;
 }
 
-.mat-cell, .mat-header-cell {
+.mat-cell,
+.mat-header-cell {
   padding: 5px;
   align-items: center;
   overflow: hidden;
