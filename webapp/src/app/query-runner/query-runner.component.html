@@ -1,34 +1,59 @@
-<mat-tab-group
-  [(selectedIndex)]="tabIndex"
-  class="mat-tab-fill-height full-size"
->
+<mat-tab-group [(selectedIndex)]="tabIndex" class="full-size">
   <mat-tab label="Explanations">
     <div class="tab-content">
       <p>
-        SPINDLE enables some statistics on distributed databases without
-        revealing any data. It does so by using a new kind of cryptography,
-        allowing to apply common mathematical operation on encrypted data and
-        only revealing the result.
+        In this demo, three hospitals want to determine if a patient has
+        diabetes or not. To avoid invasive procedures, theses only want to
+        proceed with the full test if it is likely that the patient has it.
       </p>
+
       <p>
-        In this demo, we only show a fraction of SPINDLE, namely the training of
+        To predict if someone is having diabetes, these hospitals use what is
+        known as a
         <a href="https://en.wikipedia.org/wiki/Generalized_linear_model"
-          >generalized linear models</a
-        >. It is a statistical method to predict the outcome of a given row of
-        data, based on a known set of representative values, the dataset.
-      </p>
-      <p>
-        The shown tables are a set of several medical metrics, easily
-        measurable, and show if the patient has diabetes. Thus we will be able
-        to predict if someone is likely diabetic, or not.
+          >generalized linear model</a
+        >. It is a statistical method used to predict the likeliness of someone
+        exhibiting a condition, based on a known set of representative values.
+        It works in two phases, first the training, where the model ingests
+        data, then you can predict with the trained model, to determine if some
+        new patient is likely sick.
         <br />
-        Each table is stored on a separated node, nothing is shared in clear,
-        yet, by cooperating with each others, the network can deliver the
-        results to you.
+        For example, imagine if having diabetes was only determined by the age
+        of the patient, after 40, you are assured to have it. After training,
+        your model will come to the same conclusion, and when asked to predict
+        if a patient is diabetic, it will only look at their age, and answer
+        accordingly.
       </p>
+
       <p>
-        Now, you can move to the next part, where you will train a model using
-        SPINDLE.
+        In order to improve the quality of the model, these hospitals need to
+        share the collected data, but doing so trivially does endanger the
+        patient's privacy. If they decide to put all the data at the same place,
+        there is a greater risk that such a treasure will be attacked. If they
+        decide to keep the data locally and only share the model, it can still
+        leak data by "reversing" part of it.
+      </p>
+
+      <p>
+        Here comes SPINDLE, which enables some statistics on distributed
+        databases without sharing any data in clear. It does so by using a
+        <a href="https://en.wikipedia.org/wiki/Lattice-based_cryptography"
+          >new kind of cryptography</a
+        >, allowing to apply common mathematical operations on encrypted data
+        and only revealing the result.
+      </p>
+
+      <p>
+        Around this text, you can see the three hospitals' data, which you can
+        see the content of by clicking on it. Each data is stored in a separated
+        instance of SPINDLE, none of it is shared as it but is first encrypted.
+        By cooperating with each other, the hospitals can deliver the
+        statistical results to you, without any privacy issues.
+      </p>
+
+      <p>
+        Now, you can move to the next part, where you will use the network to
+        create a predicator.
       </p>
       <button mat-raised-button color="primary" (click)="nextPage()">
         Next Page
@@ -39,9 +64,16 @@
   <mat-tab label="Train Model">
     <div class="tab-content">
       <p>
-        Here, you can train a model using SPINDLE. Each parameter below controls
-        some of the modeling process. It isn't a finite computation, rather each
-        is a trade-off between accuracy and time.
+        Here, you can train a statistical model which allows for predicting if a
+        new patient is likely to have diabetes. Each hospital will first train a
+        local model then merge it with the others, which will be used for the
+        next local iteration, and so on.
+      </p>
+
+      <p>
+        Each parameter below controls some aspects of the training. The higher
+        the number of iteration, the preciser the model will be but the more
+        time it'll take to finish training.
       </p>
 
       <form
@@ -160,11 +192,11 @@
   <mat-tab label="Predict with a Model">
     <div class="tab-content">
       <p *ngIf="state[0] === 'training' || state[0] === 'train error'">
-        Now, we are waiting for SPINDLE to build the model. Each node computes a
-        local model based on its dataset. When it did enough local round, a
-        network model is created by merging each local ones together. Then a new
-        local round is started, merged with the rest of the network, and so on,
-        each iteration yielding a better model.
+        Now, we are waiting for SPINDLE to build the model. Each hospital
+        computes a local model based on its dataset. When enough local round are
+        made, a network model is created by merging each local ones together.
+        Then a new local round is started, merged with the rest of the network,
+        and so on, each iteration yielding a better model.
       </p>
 
       <div *ngIf="state[0] === 'training' || state[0] === 'train error'">

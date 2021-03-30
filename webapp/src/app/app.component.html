@@ -1,5 +1,6 @@
-<div class="small-vspace"></div>
-<div class="white-border">
+<lib-breadcrumbs [showcaseBreadCrumb]="showcaseBreadCrumb"> </lib-breadcrumbs>
+
+<div>
   <mat-grid-list cols="2" rowHeight="fit" gutterSize="2%" class="full-size">
     <mat-grid-tile>
       <app-query-runner
@@ -11,14 +12,13 @@
       style="border: solid"
       *ngFor="let dataset of datasets; let i = index"
     >
-      <mat-grid-tile-header>Node {{ i + 1 }}</mat-grid-tile-header>
+      <mat-grid-tile-header>Hospital {{ i + 1 }}</mat-grid-tile-header>
       <lib-revealer>
         <lib-revealer-label>
-          This data is hidden in the node and cannot be seen by the querier.
+          This is the data stored at each hospital. It cannot be seen by anyone.
           <br />
-          Only updates to the model in encrypted form will ever leave this node.
+          However for demonstration purposes, you can click to reveal it.
           <br />
-          For demonstration purposes, however, you can have a look at the data.
         </lib-revealer-label>
         <lib-table-viewer [table]="dataset | async"> </lib-table-viewer>
       </lib-revealer>
