@@ -2,11 +2,7 @@ import { List, Map } from "immutable";
 
 import { Component, Input, OnChanges } from "@angular/core";
 import { FormControl, FormGroup, Validators } from "@angular/forms";
-import {
-  ColumnTypes,
-  NumberColumn,
-  StringColumn,
-} from "@c4dt/angular-components";
+import { ColumnTypes } from "@c4dt/angular-components";
 
 import { ClientService } from "../client.service";
 import { PredictRequest, TrainRequest, ModelID } from "../proto/logreg";
@@ -95,6 +91,23 @@ export class QueryRunnerComponent implements OnChanges {
     return form.value;
   }
 
+  private getFormValueToPredict(): List<number> {
+    if (this.predict === undefined || this.predict === null)
+      throw new Error("no to-predict definied");
+    const predict = this.predict;
+
+    return this.predict.fields.map((field) => {
+      const form = predict.form.get(field.name);
+      if (form === null)
+        throw new Error(`unable to find form's field: {field.label}`);
+
+      if (typeof form.value === "number") return form.value;
+      // TODO avoid magical parse
+      else if (typeof form.value === "string") return parseFloat(form.value);
+      throw new Error("can only predict with numbers");
+    });
+  }
+
   async runTrainRequest(): Promise<void> {
     const localIterations = this.getTrainFormValue("localIterationCount");
     const globalIterations = this.getTrainFormValue("networkIterationCount");
@@ -148,18 +161,10 @@ export class QueryRunnerComponent implements OnChanges {
       this.state[0] !== "predicted"
     )
       throw new Error(`unexpected state: ${this.state[0]}`);
-    if (this.selectedRow === undefined || this.selectedRow === null)
-      throw new Error("row not selected");
 
     const query = new PredictRequest(
       this.state[1],
-      this.selectedRow.map((column) => {
-        if (column instanceof NumberColumn) return column.rows.first();
-        // TODO avoid magical parse
-        else if (column instanceof StringColumn)
-          return parseFloat(column.rows.first());
-        throw new Error("can only predict with numbers");
-      })
+      this.getFormValueToPredict()
     );
 
     try {

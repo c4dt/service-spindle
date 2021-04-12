@@ -254,24 +254,41 @@
         </p>
 
         <p *ngIf="predict === undefined">Loading dataset's columns...</p>
-        <table mat-table *ngIf="predict !== undefined">
-          <tr>
-            <ng-container *ngFor="let field of predict.fields">
-              <th mat-header-cell class="mat-header-cell cdk-header-cell">
-                {{ field.name }}
-              </th>
-            </ng-container>
-          </tr>
-          <tr>
-            <ng-container *ngFor="let field of predict.fields">
-              <td mat-cell class="mat-cell cdk-cell">{{ field.value }}</td>
-            </ng-container>
-          </tr>
-        </table>
+        <form
+          [formGroup]="predict.form"
+          (ngSubmit)="runPredictRequest()"
+          *ngIf="predict !== undefined"
+        >
+          <table mat-table>
+            <tr>
+              <ng-container *ngFor="let field of predict.fields">
+                <th mat-header-cell class="mat-header-cell cdk-header-cell">
+                  {{ field.name }}
+                </th>
+              </ng-container>
+            </tr>
+            <tr>
+              <ng-container *ngFor="let field of predict.fields">
+                <td mat-cell class="mat-cell cdk-cell">
+                  <input
+                    matInput
+                    formControlName="{{ field.name }}"
+                    value="{{ field.value }}"
+                  />
+                </td>
+              </ng-container>
+            </tr>
+          </table>
 
-        <button mat-raised-button color="primary" (click)="runPredictRequest()">
-          Predict
-        </button>
+          <button
+            mat-raised-button
+            color="primary"
+            type="submit"
+            [disabled]="!predict.form.valid"
+          >
+            Predict
+          </button>
+        </form>
       </div>
 
       <p>
