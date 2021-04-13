@@ -23,7 +23,7 @@ export class AppComponent {
 
   public readonly showcaseBreadCrumb: BreadCrumb = {
     label: "SPINDLE",
-    link: new URL("https://incubator.c4dt.org/spindle.html"),
+    link: new URL("https://factory.c4dt.org/incubator/spindle"),
   };
 
   constructor(config: ConfigService) {
