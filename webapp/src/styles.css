@@ -6,7 +6,16 @@ body {
 }
 body {
   margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
+  font-family: Verdana, sans-serif;
+}
+.mat-body,
+.mat-body-1,
+.mat-typography {
+  font-family: Verdana, sans-serif;
+}
+
+.mat-table {
+  font-family: Verdana, sans-serif;
 }
 
 .full-size {
