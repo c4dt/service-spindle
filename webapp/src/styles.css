@@ -1,15 +1,55 @@
 /* You can add global styles to this file, and also import other style files */
-
+@import "@c4dt/angular-components/src/c4dt.css";
 html,
 body {
   height: 100%;
 }
 body {
   margin: 0;
-  font-family: Roboto, "Helvetica Neue", sans-serif;
 }
 
 .full-size {
   height: 100%;
   width: 100%;
+}
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: var(--dark-grey);
+    color: var(--light-grey);
+  }
+  .mat-table {
+    background-color: var(--dark-grey);
+    color: var(--light-grey);
+  }
+  .mat-tab-group,
+  .mat-tab-label,
+  .mat-tab-link {
+    font-family: Verdana, sans-serif;
+  }
+  .mat-header-cell,
+  .mat-cell,
+  .mat-footer-cell {
+    color: var(--light-grey);
+  }
+  .mat-row,
+  .mat-header-row,
+  .mat-footer-row {
+    border-color: var(--light-grey);
+    border-style: dotted;
+  }
+  .mat-row:hover {
+    background-color: #cf975e;
+    cursor: pointer;
+  }
+  td.mat-cell,
+  td.mat-footer-cell,
+  th.mat-header-cell {
+    border-color: var(--light-grey);
+  }
+  .mat-tab-label,
+  .mat-tab-link,
+  .mat-form-field-appearance-legacy .mat-hint,
+  .mat-form-field-appearance-legacy .mat-form-field-label {
+    color: var(--light-grey);
+  }
 }
