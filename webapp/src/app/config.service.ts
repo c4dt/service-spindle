@@ -2,7 +2,7 @@ import { List } from "immutable";
 
 import { Injectable } from "@angular/core";
 
-let locationStripped = globalThis.location.href;
+let locationStripped = "https://factory.c4dt.org/incubator/spindle/demo";
 if (locationStripped.endsWith("/"))
   locationStripped = locationStripped.substr(0, locationStripped.length - 1);
 const datasetBaseURL = `${locationStripped}/datasets`;
