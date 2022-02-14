@@ -1,7 +1,17 @@
+const webpack = require("webpack");
+
 module.exports = {
-  node: {
-    crypto: true,
-    fs: "empty",
-    os: "empty",
+  node: { global: true },
+  resolve: {
+    fallback: {
+      crypto: false,
+      stream: false,
+    },
   },
+  plugins: [
+    new webpack.ProvidePlugin({
+      Buffer: ["buffer", "Buffer"],
+      process: ["process"],
+    }),
+  ],
 };
