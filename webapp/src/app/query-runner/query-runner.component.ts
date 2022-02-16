@@ -174,7 +174,7 @@ export class QueryRunnerComponent implements OnChanges {
 
       this.state = ["predicted", this.state[1], ret.Prediction];
     } catch (e) {
-      const error = e instanceof Error ? e : new Error(e);
+      const error = e instanceof Error ? e : new Error(`{e}`);
       this.state = ["predict error", this.state[1], error];
       throw error;
     }
