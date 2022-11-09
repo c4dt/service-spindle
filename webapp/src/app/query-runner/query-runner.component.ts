@@ -35,12 +35,12 @@ export class QueryRunnerComponent implements OnChanges {
   public settingsOpened = false;
 
   public readonly trainForm = new FormGroup({
-    localIterationCount: new FormControl(3, Validators.required),
-    networkIterationCount: new FormControl(2, Validators.required),
+    localIterationCount: new FormControl(3, { nonNullable: true }),
+    networkIterationCount: new FormControl(2, { nonNullable: true }),
 
-    learningRate: new FormControl(0.01, Validators.required),
-    elasticRate: new FormControl(0.01, Validators.required),
-    localBatchSize: new FormControl(50, Validators.required),
+    learningRate: new FormControl(0.01, { nonNullable: true }),
+    elasticRate: new FormControl(0.01, { nonNullable: true }),
+    localBatchSize: new FormControl(50, { nonNullable: true }),
   });
   public predict:
     | {
