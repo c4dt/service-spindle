@@ -1,9 +1,6 @@
 language: node_js
 node_js: 14
 
-addons:
-  ssh_known_hosts: c4dtsrv1.epfl.ch
-
 cache:
   npm: false # avoid caching empty node_modules
 
@@ -14,13 +11,3 @@ script: make
 after_script:
   - set -e
   - out=`git status --porcelain`; [ -z "$out" ] || ( git diff && exit 1 )
-
-before_deploy:
-  - echo "$DEPLOY_SSH_KEY" > "$HOME/.ssh/id_rsa"
-  - chmod 600 "$HOME/.ssh/id_rsa"
-deploy:
-  provider: script
-  script: rsync -a --del webapp/dist/spindle/ spindle@c4dtsrv1.epfl.ch:www
-  skip_cleanup: true
-  on:
-    branch: main
