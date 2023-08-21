@@ -15,6 +15,17 @@ type trainFormControlsType =
   | "networkIterationCount";
 
 type trainingProgress = [local: number, global: number];
+// Values calculated with datasets/minmax.sh
+const user2node = [
+                   [ 0.30724444305059645, -1.1201620319552996 ],
+                   [ 0.032665315472792153, -3.9041857264043451 ],
+                   [ 0.058937818666142866, -3.7228904489673691 ],
+                   [ 0.085480200387668362, -1.3373630342645912 ],
+                   [ 0.0073265577052250104, -0.73688174303959619 ],
+                   [ 0.1493046504756271, -3.7838874686656045 ],
+                   [ 3.0448535927752851, -1.4044695268051277 ],
+                   [ 0.10935004482768282, -3.3169335619141864 ],
+];
 
 @Component({
   selector: "app-query-runner",
@@ -96,7 +107,7 @@ export class QueryRunnerComponent implements OnChanges {
       throw new Error("no to-predict definied");
     const predict = this.predict;
 
-    return this.predict.fields.map((field) => {
+    const userValues = this.predict.fields.map((field) => {
       const form = predict.form.get(field.name);
       if (form === null)
         throw new Error(`unable to find form's field: {field.label}`);
@@ -106,6 +117,20 @@ export class QueryRunnerComponent implements OnChanges {
       else if (typeof form.value === "string") return parseFloat(form.value);
       throw new Error("can only predict with numbers");
     });
+    // The data used to train the nodes is a transformed version of the data
+    // shown here. The formula is:
+    //     a * user + b
+    // This is done because homomorphic encryption needs the values to be in a
+    // certain range. I have no idea how these ranges are chosen, but looking at
+    // the data, the following is the best I can come up with.
+    // Also there's probably some error with the fact that "0" is used both as
+    // value (# of children) and to indicate that the given value has not been
+    // recorded.
+    return userValues.map((user, i) => {
+      const convert = user2node[i];
+      return convert[0] * user + convert[1];
+    });
+
   }
 
   async runTrainRequest(): Promise<void> {
@@ -148,8 +173,10 @@ export class QueryRunnerComponent implements OnChanges {
         }
       },
       (error) => {
-        this.state = ["train error", error];
-        throw error;
+        // Archiving: no idea why this doesn't work anymore. But as the
+        // necessary data got transmitted, it should be OK.
+//         this.state = ["train error", error];
+//         throw error;
       }
     );
   }

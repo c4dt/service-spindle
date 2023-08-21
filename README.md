@@ -1,4 +1,21 @@
-# Spindle demonstrator
+# Spindle demonstrator - ARCHIVED
+
+This repo has been archived is no longer supported.
+You can however use this as a demo to run on your local machine.
+To run the demo, download the repo, run the `docker-compose.yaml`,
+and point the browser to [localhost:8080](http://localhost:8080):
+
+```bash
+git clone https://github.com/c4dt/service-spindle
+cd service-spindle
+docker-compose up -d
+# At least on Mac you can quickly open the frontend:
+open localhost:8080
+```
+
+For any questions contact [c4dt-dev@listes.epfl.ch](mailto:c4dt-dev@listes.epfl.ch).
+
+## Description
 
 Machine learning allows computers to make choices without being explicitly
 programmed for each case. As this field is quite enormous, we will only talk

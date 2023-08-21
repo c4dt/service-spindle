@@ -40,6 +40,6 @@ class Client {
 })
 export class ClientService extends Client {
   constructor(config: ConfigService) {
-    super(config.URL);
+    super(config.NodeURL);
   }
 }

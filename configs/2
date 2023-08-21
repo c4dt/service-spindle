@@ -1,0 +1,29 @@
+Address = "tcp://node-2:2000"
+URL = "http://node-2:2001"
+
+[Keys]
+
+  [Keys.Protocol]
+    Path = "2_keys"
+
+  [Keys.Server]
+    Private = "9297f8a34f49b4fc1411c4f5bb8dbe3ab9159376dd579b257ced630bc2601007"
+    Public = "0443e3677a490376257555789c895fcf0722eb1068422752a8eabb1373f44700"
+
+  [Keys.Service]
+    Private = "c542fae48b90e117348a0bb75d8a034f5c4da6b2dec8295f3f94397fbf9deb04"
+    Public = "459f1e816454b0a21552c4dd06d102fd01286bf046366d3c49f2f829a621a497"
+
+[Loader]
+
+  [Loader.CSV]
+    Path = "/datasets/2_node"
+    ResultsSide = "right"
+
+[[Nodes]]
+  Address = "tcp://node-1:2000"
+  Public = "2f3dcd2f3d5aa1a18f36e405bbde769612256f6c2140c9681c01ff29d6e57dc5"
+
+[[Nodes]]
+  Address = "tcp://node-3:2000"
+  Public = "1d22d330d473d24256781d36edd4db641510f879832f3f5bdbf14931065809c5"

@@ -1,0 +1,5 @@
+/.git
+/datasets
+/configs
+node_modules/
+dist/
