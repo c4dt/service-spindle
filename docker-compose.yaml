@@ -1,0 +1,56 @@
+version: "3.5"
+
+services:
+  frontend:
+    build: .
+    image: ghcr.io/c4dt/service-spindle:latest
+    networks:
+      - spindle
+    volumes:
+      - ./datasets:/frontend/datasets
+    ports:
+      - "8080:8080"
+
+  node-1:
+    image: ghcr.io/c4dt/spindle:latest
+    environment:
+      - NODE=1
+      - DEBUG_LVL=2
+      - DEBUG_COLOR=1
+    volumes:
+      - ./configs:/configs
+      - ./datasets:/datasets
+    networks:
+      - spindle
+    restart: unless-stopped
+    ports:
+      - "8081:2001"
+
+  node-2:
+    image: ghcr.io/c4dt/spindle:latest
+    environment:
+      - NODE=2
+      - DEBUG_LVL=2
+      - DEBUG_COLOR=1
+    volumes:
+      - ./configs:/configs
+      - ./datasets:/datasets
+    networks:
+      - spindle
+    restart: unless-stopped
+
+  node-3:
+    image: ghcr.io/c4dt/spindle:latest
+    environment:
+      - NODE=3
+      - DEBUG_LVL=2
+      - DEBUG_COLOR=1
+    volumes:
+      - ./configs:/configs
+      - ./datasets:/datasets
+    networks:
+      - spindle
+    restart: unless-stopped
+
+networks:
+  spindle:

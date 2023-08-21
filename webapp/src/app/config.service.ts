@@ -2,7 +2,8 @@ import { List } from "immutable";
 
 import { Injectable } from "@angular/core";
 
-let locationStripped = globalThis.location.href;
+const loc = globalThis.location;
+let locationStripped = loc.href;
 if (locationStripped.endsWith("/"))
   locationStripped = locationStripped.substr(0, locationStripped.length - 1);
 const datasetBaseURL = `${locationStripped}/datasets`;
@@ -11,8 +12,8 @@ const datasetBaseURL = `${locationStripped}/datasets`;
   providedIn: "root",
 })
 export class ConfigService {
-  public readonly URL = new URL(
-    `${locationStripped.replace(/^http/, "ws")}/leader`
+  public readonly NodeURL = new URL(
+  `${loc.protocol.replace(/http/, "ws")}//${loc.hostname}:8081`
   );
 
   public readonly DataProviders = List.of(

@@ -193,7 +193,7 @@
     <div class="tab-content">
       <p *ngIf="state[0] === 'training' || state[0] === 'train error'">
         Now, we are waiting for SPINDLE to build the model. Each hospital
-        computes a local model based on its dataset. When enough local round are
+        computes a local model based on its dataset. When enough local rounds are
         made, a network model is created by merging each local ones together.
         Then a new local round is started, merged with the rest of the network,
         and so on, each iteration yielding a better model.
@@ -248,7 +248,7 @@
         "
       >
         <p>
-          The model is now computed and you can use it to know if your patient
+          The model is now computed, and you can use it to know if your patient
           is likely to have diabetes. Click on any row of the hospital, or
           directly edit the fields and ask SPINDLE to predict the result.
         </p>
@@ -296,7 +296,9 @@
           The trained model predicts that the patient is
           <ng-container *ngIf="state[2]"> <b>diabetic</b></ng-container>
           <ng-container *ngIf="!state[2]"> <b>not diabetic</b></ng-container
-          >.
+          >.<br>
+          Now click on one of the Hospitals and choose another line and see if the
+          model predicts the diabetes correctly or not.
         </ng-container>
         <ng-container *ngIf="state[0] === 'predict error'">
           Oops, it seems that an error occurred when predict using the trained
@@ -307,7 +309,9 @@
       <p *ngIf="state[0] === 'predicted'">
         If you find that your model is not predicting correctly, try playing
         around with the settings in the previous tab and generate a preciser
-        model until you are happy with how it is behaving.
+        model until you are happy with how it is behaving.<br>
+        You can for example choose <i>local iterations</i> to be 5, and
+        <i>network iteration count</i> to be 4.
       </p>
     </div>
   </mat-tab>
