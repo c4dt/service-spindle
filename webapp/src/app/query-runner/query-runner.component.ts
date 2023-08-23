@@ -172,12 +172,6 @@ export class QueryRunnerComponent implements OnChanges {
             this.state = ["trained", progress.Value[1]];
         }
       },
-      (error) => {
-        // Archiving: no idea why this doesn't work anymore. But as the
-        // necessary data got transmitted, it should be OK.
-//         this.state = ["train error", error];
-//         throw error;
-      }
     );
   }
 

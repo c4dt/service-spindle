@@ -9,7 +9,6 @@ and point the browser to [localhost:8080](http://localhost:8080):
 git clone https://github.com/c4dt/service-spindle
 cd service-spindle
 docker-compose up -d
-# At least on Mac you can quickly open the frontend:
 open localhost:8080
 ```
 
