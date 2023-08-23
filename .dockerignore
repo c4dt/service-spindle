@@ -1,4 +1,5 @@
 /.git
+/.github
 /datasets
 /configs
 node_modules/
